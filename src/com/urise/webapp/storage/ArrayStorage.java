@@ -1,3 +1,7 @@
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -7,7 +11,7 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     private int resumeCount = 0;
 
-    void clear() {
+    public void clear() {
         if (resumeCount > 0) {
             for (int i = 0; i < resumeCount; i++) {
                 storage[i] = null;
@@ -18,10 +22,10 @@ public class ArrayStorage {
         }
     }
 
-    void save(Resume r) {
-        int index = findResumeIndex(r.uuid);
+    public void save(Resume r) {
+        int index = findResumeIndex(r.getUuid());
         if (index >= 0) {
-            System.out.println("Резюме с таким uuid уже есть");
+            System.out.format("Резюме %s уже есть\n", r.getUuid());
             return;
         }
         if (resumeCount == storage.length) {
@@ -32,7 +36,16 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public void update (Resume r) {
+        int index = findResumeIndex(r.getUuid());
+        if (index >= 0) {
+            System.out.format("Резюме %s найдено\n", r.getUuid());
+        } else {
+            System.out.format("Резюме %s не найдено\n", r.getUuid());
+        }
+    }
+
+    public Resume get(String uuid) {
         int index = findResumeIndex(uuid);
         if (index >= 0) {
             return storage[index];
@@ -41,7 +54,7 @@ public class ArrayStorage {
         }
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index >= 0) {
             System.arraycopy(storage,  index + 1, storage, index, resumeCount - 1 - index);
@@ -55,17 +68,17 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, resumeCount);
     }
 
-    int size() {
+    public int size() {
         return resumeCount;
     }
 
     private int findResumeIndex(String uuid) {
         for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
