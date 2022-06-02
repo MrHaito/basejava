@@ -36,7 +36,7 @@ public class ArrayStorage {
         }
     }
 
-    public void update (Resume r) {
+    public void update(Resume r) {
         int index = findResumeIndex(r.getUuid());
         if (index >= 0) {
             System.out.format("Резюме %s найдено\n", r.getUuid());
@@ -57,7 +57,7 @@ public class ArrayStorage {
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index >= 0) {
-            System.arraycopy(storage,  index + 1, storage, index, resumeCount - 1 - index);
+            System.arraycopy(storage, index + 1, storage, index, resumeCount - 1 - index);
             storage[resumeCount - 1] = null;
             resumeCount--;
         } else {
