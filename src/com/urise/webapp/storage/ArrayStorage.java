@@ -13,9 +13,7 @@ public class ArrayStorage {
 
     public void clear() {
         if (resumeCount > 0) {
-            for (int i = 0; i < resumeCount; i++) {
-                storage[i] = null;
-            }
+            Arrays.fill(storage, 0, resumeCount, null);
             resumeCount = 0;
         } else {
             System.out.println("Список пуст");
@@ -24,12 +22,10 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         int index = findResumeIndex(r.getUuid());
-        if (index >= 0) {
-            System.out.format("Резюме %s уже есть\n", r.getUuid());
-            return;
-        }
         if (resumeCount == storage.length) {
             System.out.println("Место закончилось");
+        } else if (index >= 0) {
+            System.out.format("Резюме %s уже есть\n", r.getUuid());
         } else {
             storage[resumeCount] = r;
             resumeCount++;
@@ -40,6 +36,7 @@ public class ArrayStorage {
         int index = findResumeIndex(r.getUuid());
         if (index >= 0) {
             System.out.format("Резюме %s найдено\n", r.getUuid());
+            storage[index].setUuid(r.getUuid());
         } else {
             System.out.format("Резюме %s не найдено\n", r.getUuid());
         }
@@ -57,7 +54,8 @@ public class ArrayStorage {
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index >= 0) {
-            System.arraycopy(storage, index + 1, storage, index, resumeCount - 1 - index);
+            //System.arraycopy(storage, index + 1, storage, index, resumeCount - 1 - index);
+            storage[index] = storage[resumeCount - 1];
             storage[resumeCount - 1] = null;
             resumeCount--;
         } else {
