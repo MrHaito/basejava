@@ -9,22 +9,21 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private final Resume[] storage = new Resume[10000];
-    private int resumeCount = 0;
+    private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage, 0, resumeCount, null);
-        resumeCount = 0;
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     public void save(Resume r) {
-        int index = findResumeIndex(r.getUuid());
-        if (resumeCount == storage.length) {
+        if (size == storage.length) {
             System.out.println("Место закончилось");
-        } else if (index >= 0) {
+        } else if (findResumeIndex(r.getUuid()) >= 0) {
             System.out.format("Резюме %s уже есть\n", r.getUuid());
         } else {
-            storage[resumeCount] = r;
-            resumeCount++;
+            storage[size] = r;
+            size++;
         }
     }
 
@@ -40,20 +39,20 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int index = findResumeIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
+        if (index == -1) {
+            System.out.format("Резюме %s не найдено\n", uuid);
             return null;
         }
+        return storage[index];
     }
 
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index >= 0) {
             //System.arraycopy(storage, index + 1, storage, index, resumeCount - 1 - index);
-            storage[index] = storage[resumeCount - 1];
-            storage[resumeCount - 1] = null;
-            resumeCount--;
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         } else {
             System.out.format("Резюме %s не найдено\n", uuid);
         }
@@ -63,15 +62,15 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, resumeCount);
+        return Arrays.copyOf(storage, size);
     }
 
     public int size() {
-        return resumeCount;
+        return size;
     }
 
     private int findResumeIndex(String uuid) {
-        for (int i = 0; i < resumeCount; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
