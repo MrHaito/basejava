@@ -2,6 +2,8 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -36,6 +38,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected int findResumeIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
-        return 0; //Arrays.binarySearch(STORAGE.STORAGE, 0, size, searchKey);
+        return Arrays.binarySearch(STORAGE, 0, size, searchKey);
     }
 }
