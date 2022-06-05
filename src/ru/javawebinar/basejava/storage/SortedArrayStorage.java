@@ -18,7 +18,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             if (size == 0) {
                 STORAGE[size] = r;
             } else {
-                int index = findIndexForSave(r);
+                int index = Math.abs(findResumeIndex(r.getUuid()) + 1);
                 System.arraycopy(STORAGE, index, STORAGE, index + 1, size - index);
                 STORAGE[index] = r;
             }
@@ -42,19 +42,5 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
         return Arrays.binarySearch(STORAGE, 0, size, searchKey);
-    }
-
-    private int findIndexForSave(Resume resume) {
-        if (resume.getUuid().compareTo(STORAGE[size - 1].getUuid()) > 0) {
-            return size;
-        } else {
-            for (int i = 0; i <= size; i++) {
-                if (resume.getUuid().compareTo(STORAGE[i].getUuid()) > 0 &&
-                        resume.getUuid().compareTo(STORAGE[i + 1].getUuid()) < 0) {
-                    return i + 1;
-                }
-            }
-        }
-        return 0;
     }
 }
