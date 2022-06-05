@@ -46,7 +46,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     private int findIndexForSave(Resume resume) {
         for (int i = 0; i <= size; i++) {
-            if (resume.getUuid().compareTo(STORAGE[i].getUuid()) > 0) {
+            if (resume.getUuid().compareTo(STORAGE[size - 1].getUuid()) > 0) {
                 return size;
             } else {
                 if (resume.getUuid().compareTo(STORAGE[i].getUuid()) > 0 &&
