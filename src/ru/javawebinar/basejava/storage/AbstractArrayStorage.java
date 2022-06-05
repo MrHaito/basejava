@@ -2,6 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -11,8 +13,30 @@ public abstract class AbstractArrayStorage implements Storage {
     protected final Resume[] STORAGE = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public int size() {
-        return size;
+    public void clear() {
+        Arrays.fill(STORAGE, 0, size, null);
+        size = 0;
+    }
+
+    public void save(Resume r) {
+        if (size == STORAGE_LIMIT) {
+            System.out.println("Место закончилось");
+        } else if (findResumeIndex(r.getUuid()) >= 0) {
+            System.out.format("Резюме %s уже есть\n", r.getUuid());
+        } else {
+            STORAGE[size] = r;
+            size++;
+        }
+    }
+
+    public void update(Resume r) {
+        int index = findResumeIndex(r.getUuid());
+        if (index >= 0) {
+            System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
+            STORAGE[index] = r;
+        } else {
+            System.out.format("Резюме %s не найдено\n", r.getUuid());
+        }
     }
 
     public Resume get(String uuid) {
@@ -22,6 +46,14 @@ public abstract class AbstractArrayStorage implements Storage {
             return null;
         }
         return STORAGE[index];
+    }
+
+    public Resume[] getAll() {
+        return Arrays.copyOf(STORAGE, size);
+    }
+
+    public int size() {
+        return size;
     }
 
     protected abstract int findResumeIndex(String uuid);

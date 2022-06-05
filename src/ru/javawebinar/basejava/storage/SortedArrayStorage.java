@@ -8,30 +8,15 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void save(Resume r) {
-
-    }
-
-    @Override
-    public void update(Resume r) {
-
-    }
-
     @Override
     public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+        int index = findResumeIndex(uuid);
+        if (index >= 0) {
+            System.arraycopy(STORAGE, index + 1, STORAGE, index, size - 1 - index);
+            size--;
+        } else {
+            System.out.format("Резюме %s не найдено\n", uuid);
+        }
     }
 
     @Override
