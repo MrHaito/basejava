@@ -24,7 +24,8 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (findResumeIndex(r.getUuid()) >= 0) {
             System.out.format("Резюме %s уже есть\n", r.getUuid());
         } else {
-            insertNewResume(r);
+            insertNewResume(r, findResumeIndex(r.getUuid()));
+            size++;
         }
     }
 
@@ -68,7 +69,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findResumeIndex(String uuid);
 
-    protected abstract void insertNewResume(Resume r);
+    protected abstract void insertNewResume(Resume r, int index);
 
     protected abstract void deleteResume(int index);
 
