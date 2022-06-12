@@ -62,9 +62,9 @@ public abstract class AbstractArrayStorageTest {
     void saveOverflow() throws NoSuchFieldException, IllegalAccessException {
         STORAGE.clear();
         Field storageLimit = AbstractArrayStorage.class.getDeclaredField("STORAGE_LIMIT");
-        int storageLenght = storageLimit.getInt(storageLimit);
+        int storageLength  = storageLimit.getInt(storageLimit);
         try {
-            for (int i = 0; i < storageLenght; i++) {
+            for (int i = 0; i < storageLength; i++) {
                 STORAGE.save(new Resume());
             }
         } catch (StorageException e) {
