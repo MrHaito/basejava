@@ -72,12 +72,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
-
-    protected abstract int findResumeIndex(String uuid);
-
-    protected abstract void insertNewResume(Resume r, int index);
-
-    protected abstract void deleteResume(int index);
-
-
 }
