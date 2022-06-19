@@ -10,17 +10,19 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected final Resume[] STORAGE = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(STORAGE, 0, size, null);
         size = 0;
     }
 
+    @Override
     public void save(Resume r) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Место закончилось", r.getUuid());
@@ -32,6 +34,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public void update(Resume r) {
         int index = findResumeIndex(r.getUuid());
         if (index >= 0) {
@@ -42,6 +45,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = findResumeIndex(uuid);
         if (index == -1) {
