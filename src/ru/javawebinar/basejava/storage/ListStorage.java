@@ -1,40 +1,27 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
-/**
- * Array based storage for Resumes
- */
-public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected static final int STORAGE_LIMIT = 10000;
-
-    protected final Resume[] STORAGE = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+public class ListStorage extends AbstractStorage {
+    protected final ArrayList<Resume> STORAGE = new ArrayList<>();
 
     @Override
     public void clear() {
-        Arrays.fill(STORAGE, 0, size, null);
-        size = 0;
+        STORAGE.clear();
     }
 
     @Override
     public void save(Resume r) {
-        if (size == STORAGE_LIMIT) {
-            throw new StorageException("Место закончилось", r.getUuid());
-        }
-//        else if (getSearchKey(r.getUuid()) >= 0) {
+//        if (getSearchKey(r.getUuid()) >= 0) {
 //            throw new ExistStorageExeption(r.getUuid());
 //        } else {
 //            insertNewResume(r, getSearchKey(r.getUuid()));
-//            size++;
 //        }
         isExist(r);
         insertNewResume(r, getSearchKey(r.getUuid()));
-        size++;
     }
 
     @Override
@@ -42,7 +29,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         int index = getSearchKey(r.getUuid());
         if (index >= 0) {
             System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
-            STORAGE[index] = r;
+            STORAGE.set(index, r);
         } else {
             throw new NotExistStorageExeption(r.getUuid());
         }
@@ -54,7 +41,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (index == -1) {
             throw new NotExistStorageExeption(uuid);
         }
-        return STORAGE[index];
+        return STORAGE.get(index);
     }
 
     @Override
@@ -62,17 +49,42 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         int index = getSearchKey(uuid);
         if (index >= 0) {
             deleteResume(index);
-            size--;
         } else {
             throw new NotExistStorageExeption(uuid);
         }
     }
 
+    @Override
     public Resume[] getAll() {
-        return Arrays.copyOf(STORAGE, size);
+        Resume[] resumes = new Resume[STORAGE.size()];
+        resumes = STORAGE.toArray(resumes);
+        return resumes;
     }
 
+    @Override
     public int size() {
-        return size;
+        return STORAGE.size();
     }
+
+    @Override
+    protected int getSearchKey(String uuid) {
+        for (Resume resume : STORAGE) {
+            if (resume.getUuid().equals(uuid)) {
+                return STORAGE.indexOf(resume);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    protected void insertNewResume(Resume r, int index) {
+        STORAGE.add(r);
+    }
+
+    @Override
+    protected void deleteResume(int index) {
+        STORAGE.remove(index);
+    }
+
+
 }
