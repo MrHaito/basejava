@@ -13,18 +13,6 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume r) {
-        isExist(r);
-        insertNewResume(r, findResumeIndex(r.getUuid()));
-    }
-
-    @Override
-    public void delete(String uuid) {
-        notExist(uuid);
-        deleteResume(findResumeIndex(uuid));
-    }
-
-    @Override
     public Resume[] getAll() {
         Resume[] resumes = new Resume[STORAGE.size()];
         resumes = STORAGE.toArray(resumes);
@@ -37,7 +25,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int findResumeIndex(String uuid) {
+    protected Object findSearchKey(String uuid) {
         for (Resume resume : STORAGE) {
             if (resume.getUuid().equals(uuid)) {
                 return STORAGE.indexOf(resume);
@@ -47,22 +35,27 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insertNewResume(Resume r, int index) {
+    protected boolean isExist(Object object) {
+        return (int) object >= 0;
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
         STORAGE.add(r);
     }
 
     @Override
-    protected void deleteResume(int index) {
-        STORAGE.remove(index);
+    protected void doDelete(Object searchKey) {
+        STORAGE.remove((int) searchKey);
     }
 
     @Override
-    protected void updateResume(int index, Resume r) {
-        STORAGE.set(index, r);
+    protected void doUpdate(Resume r, Object searchKey) {
+        STORAGE.set((int) searchKey, r);
     }
 
     @Override
-    protected Resume getResumeByIndex(int index) {
-        return STORAGE.get(index);
+    protected Resume doGet(Object searchKey) {
+        return STORAGE.get((int) searchKey);
     }
 }

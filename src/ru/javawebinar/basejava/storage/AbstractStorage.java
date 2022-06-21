@@ -7,42 +7,56 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     @Override
+    public void save(Resume r) {
+        Object searchKey = findExistingSearchKey(r.getUuid());
+        doSave(r, searchKey);
+    }
+
+    @Override
     public void update(Resume r) {
-        int index = findResumeIndex(r.getUuid());
-        if (index >= 0) {
+        Object searchKey = findNotExistingSearchKey(r.getUuid());
+        if (isExist(searchKey)) {
             System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
-            updateResume(index, r);
-        } else {
-            throw new NotExistStorageExeption(r.getUuid());
+            doUpdate(r, searchKey);
         }
     }
 
     @Override
     public Resume get(String uuid) {
-        notExist(uuid);
-        return getResumeByIndex(findResumeIndex(uuid));
+        return doGet(findNotExistingSearchKey(uuid));
     }
 
-    protected void isExist(Resume r) {
-        if (findResumeIndex(r.getUuid()) >= 0) {
-            throw new ExistStorageExeption(r.getUuid());
+    @Override
+    public void delete(String uuid) {
+        Object searchKey = findNotExistingSearchKey(uuid);
+        doDelete(searchKey);
+    }
+
+    protected abstract Object findSearchKey(String uuid);
+
+    protected Object findExistingSearchKey(String uuid) {
+        Object searchKey = findSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageExeption(uuid);
         }
+        return searchKey;
     }
 
-    protected void notExist(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index == -1) {
+    protected Object findNotExistingSearchKey(String uuid) {
+        Object searchKey = findSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageExeption(uuid);
         }
+        return searchKey;
     }
 
-    protected abstract int findResumeIndex(String uuid);
+    protected abstract boolean isExist(Object object);
 
-    protected abstract void insertNewResume(Resume r, int index);
+    protected abstract void doSave(Resume r, Object searchKey);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract void updateResume(int index, Resume r);
+    protected abstract void doUpdate(Resume r, Object searchKey);
 
-    protected abstract Resume getResumeByIndex(int index);
+    protected abstract Resume doGet(Object searchKey);
 }
