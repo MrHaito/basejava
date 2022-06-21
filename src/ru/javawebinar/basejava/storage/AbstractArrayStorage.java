@@ -26,14 +26,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             throw new StorageException("Место закончилось", r.getUuid());
         }
         isExist(r);
-        insertNewResume(r, getSearchKey(r.getUuid()));
+        insertNewResume(r, findResumeIndex(r.getUuid()));
         size++;
     }
 
     @Override
     public void delete(String uuid) {
         notExist(uuid);
-        deleteResume(getSearchKey(uuid));
+        deleteResume(findResumeIndex(uuid));
         size--;
     }
 

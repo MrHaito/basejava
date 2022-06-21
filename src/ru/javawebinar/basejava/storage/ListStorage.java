@@ -15,13 +15,13 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void save(Resume r) {
         isExist(r);
-        insertNewResume(r, getSearchKey(r.getUuid()));
+        insertNewResume(r, findResumeIndex(r.getUuid()));
     }
 
     @Override
     public void delete(String uuid) {
         notExist(uuid);
-        deleteResume(getSearchKey(uuid));
+        deleteResume(findResumeIndex(uuid));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getSearchKey(String uuid) {
+    protected int findResumeIndex(String uuid) {
         for (Resume resume : STORAGE) {
             if (resume.getUuid().equals(uuid)) {
                 return STORAGE.indexOf(resume);

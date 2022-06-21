@@ -8,7 +8,7 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        int index = getSearchKey(r.getUuid());
+        int index = findResumeIndex(r.getUuid());
         if (index >= 0) {
             System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
             updateResume(index, r);
@@ -20,23 +20,23 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         notExist(uuid);
-        return getResumeByIndex(getSearchKey(uuid));
+        return getResumeByIndex(findResumeIndex(uuid));
     }
 
     protected void isExist(Resume r) {
-        if (getSearchKey(r.getUuid()) >= 0) {
+        if (findResumeIndex(r.getUuid()) >= 0) {
             throw new ExistStorageExeption(r.getUuid());
         }
     }
 
     protected void notExist(String uuid) {
-        int index = getSearchKey(uuid);
+        int index = findResumeIndex(uuid);
         if (index == -1) {
             throw new NotExistStorageExeption(uuid);
         }
     }
 
-    protected abstract int getSearchKey(String uuid);
+    protected abstract int findResumeIndex(String uuid);
 
     protected abstract void insertNewResume(Resume r, int index);
 
