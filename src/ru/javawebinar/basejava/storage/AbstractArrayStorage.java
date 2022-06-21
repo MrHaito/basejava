@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -26,46 +25,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Место закончилось", r.getUuid());
         }
-//        else if (getSearchKey(r.getUuid()) >= 0) {
-//            throw new ExistStorageExeption(r.getUuid());
-//        } else {
-//            insertNewResume(r, getSearchKey(r.getUuid()));
-//            size++;
-//        }
         isExist(r);
         insertNewResume(r, getSearchKey(r.getUuid()));
         size++;
     }
 
     @Override
-    public void update(Resume r) {
-        int index = getSearchKey(r.getUuid());
-        if (index >= 0) {
-            System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
-            STORAGE[index] = r;
-        } else {
-            throw new NotExistStorageExeption(r.getUuid());
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index == -1) {
-            throw new NotExistStorageExeption(uuid);
-        }
-        return STORAGE[index];
-    }
-
-    @Override
     public void delete(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index >= 0) {
-            deleteResume(index);
-            size--;
-        } else {
-            throw new NotExistStorageExeption(uuid);
-        }
+        notExist(uuid);
+        deleteResume(getSearchKey(uuid));
+        size--;
     }
 
     public Resume[] getAll() {
@@ -74,5 +43,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     public int size() {
         return size;
+    }
+
+    @Override
+    protected void updateResume(int index, Resume r) {
+        STORAGE[index] = r;
+    }
+
+    @Override
+    protected Resume getResumeByIndex(int index) {
+        return STORAGE[index];
     }
 }

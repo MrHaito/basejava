@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
@@ -15,43 +14,14 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void save(Resume r) {
-//        if (getSearchKey(r.getUuid()) >= 0) {
-//            throw new ExistStorageExeption(r.getUuid());
-//        } else {
-//            insertNewResume(r, getSearchKey(r.getUuid()));
-//        }
         isExist(r);
         insertNewResume(r, getSearchKey(r.getUuid()));
     }
 
     @Override
-    public void update(Resume r) {
-        int index = getSearchKey(r.getUuid());
-        if (index >= 0) {
-            System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
-            STORAGE.set(index, r);
-        } else {
-            throw new NotExistStorageExeption(r.getUuid());
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index == -1) {
-            throw new NotExistStorageExeption(uuid);
-        }
-        return STORAGE.get(index);
-    }
-
-    @Override
     public void delete(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index >= 0) {
-            deleteResume(index);
-        } else {
-            throw new NotExistStorageExeption(uuid);
-        }
+        notExist(uuid);
+        deleteResume(getSearchKey(uuid));
     }
 
     @Override
@@ -86,5 +56,13 @@ public class ListStorage extends AbstractStorage {
         STORAGE.remove(index);
     }
 
+    @Override
+    protected void updateResume(int index, Resume r) {
+        STORAGE.set(index, r);
+    }
 
+    @Override
+    protected Resume getResumeByIndex(int index) {
+        return STORAGE.get(index);
+    }
 }
