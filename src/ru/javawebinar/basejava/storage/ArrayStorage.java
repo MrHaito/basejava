@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 /**
@@ -18,18 +17,14 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        if (size == STORAGE_LIMIT) {
-            throw new StorageException("Место закончилось", r.getUuid());
-        }
-        STORAGE[size] = r;
-        size++;
-    }
-
-    @Override
     protected void doDelete(Object searchKey) {
         STORAGE[(int) searchKey] = STORAGE[size - 1];
         STORAGE[size - 1] = null;
         size--;
+    }
+
+    @Override
+    protected void doSaveElement(Resume r, Object searchKey) {
+        STORAGE[size] = r;
     }
 }

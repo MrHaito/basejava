@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -16,21 +15,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        if (size == STORAGE_LIMIT) {
-            throw new StorageException("Место закончилось", r.getUuid());
-        }
-        int index = Math.abs((int) searchKey + 1);
-        System.arraycopy(STORAGE, index, STORAGE, index + 1, size - index);
-        STORAGE[index] = r;
-        size++;
-    }
-
-    @Override
     protected void doDelete(Object searchKey) {
         int index = (int) searchKey;
         System.arraycopy(STORAGE, index + 1, STORAGE, index, size - 1 - index);
         size--;
     }
 
+    @Override
+    protected void doSaveElement(Resume r, Object searchKey) {
+        int index = Math.abs((int) searchKey + 1);
+        System.arraycopy(STORAGE, index, STORAGE, index + 1, size - index);
+        STORAGE[index] = r;
+    }
 }

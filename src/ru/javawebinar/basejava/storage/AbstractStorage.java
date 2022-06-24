@@ -8,13 +8,13 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        Object searchKey = findExistingSearchKey(r.getUuid());
+        Object searchKey = findNotExistingSearchKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public void update(Resume r) {
-        Object searchKey = findNotExistingSearchKey(r.getUuid());
+        Object searchKey = findExistingSearchKey(r.getUuid());
         if (isExist(searchKey)) {
             System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
             doUpdate(r, searchKey);
@@ -23,18 +23,16 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return doGet(findNotExistingSearchKey(uuid));
+        return doGet(findExistingSearchKey(uuid));
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = findNotExistingSearchKey(uuid);
+        Object searchKey = findExistingSearchKey(uuid);
         doDelete(searchKey);
     }
 
-    protected abstract Object findSearchKey(String uuid);
-
-    protected Object findExistingSearchKey(String uuid) {
+    protected Object findNotExistingSearchKey(String uuid) {
         Object searchKey = findSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageExeption(uuid);
@@ -42,13 +40,15 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    protected Object findNotExistingSearchKey(String uuid) {
+    protected Object findExistingSearchKey(String uuid) {
         Object searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageExeption(uuid);
         }
         return searchKey;
     }
+
+    protected abstract Object findSearchKey(String uuid);
 
     protected abstract boolean isExist(Object object);
 
