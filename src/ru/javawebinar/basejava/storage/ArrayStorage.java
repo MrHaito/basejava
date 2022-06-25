@@ -17,14 +17,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        STORAGE[(int) searchKey] = STORAGE[size - 1];
-        STORAGE[size - 1] = null;
-        size--;
+    protected void doSaveElement(Resume r, Object searchKey) {
+        STORAGE[size] = r;
     }
 
     @Override
-    protected void doSaveElement(Resume r, Object searchKey) {
-        STORAGE[size] = r;
+    protected void doDeleteElemet(Object searchKey) {
+        STORAGE[(int) searchKey] = STORAGE[size - 1];
     }
 }

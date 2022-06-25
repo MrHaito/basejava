@@ -15,15 +15,13 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume r) {
         Object searchKey = findExistingSearchKey(r.getUuid());
-        if (isExist(searchKey)) {
-            System.out.format("Резюме %s найдено и обновлено\n", r.getUuid());
-            doUpdate(r, searchKey);
-        }
+        doUpdate(r, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        return doGet(findExistingSearchKey(uuid));
+        Object searchKey = findExistingSearchKey(uuid);
+        return doGet(searchKey);
     }
 
     @Override
