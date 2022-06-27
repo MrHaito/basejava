@@ -22,7 +22,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doDeleteElemet(Object searchKey) {
+    protected void doDeleteElement(Object searchKey) {
         int index = (int) searchKey;
         System.arraycopy(STORAGE, index + 1, STORAGE, index, size - 1 - index);
     }

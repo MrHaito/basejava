@@ -39,7 +39,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object searchKey) {
-        doDeleteElemet(searchKey);
+        doDeleteElement(searchKey);
         STORAGE[size - 1] = null;
         size--;
     }
@@ -61,5 +61,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void doSaveElement(Resume r, Object searchKey);
 
-    protected abstract void doDeleteElemet(Object searchKey);
+    protected abstract void doDeleteElement(Object searchKey);
 }
