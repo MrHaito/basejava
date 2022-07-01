@@ -1,19 +1,19 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.SortedArrayStorage;
+import ru.javawebinar.basejava.storage.MapStorageAlternate;
 import ru.javawebinar.basejava.storage.Storage;
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new MapStorageAlternate();
 
     public static void main(String[] args) {
-        final Resume r1 = new Resume("uuid1", "Kirk Hammett");
-        final Resume r2 = new Resume("uuid2","Lars Ulrich");
-        final Resume r3 = new Resume("uuid3", "James Hetfield");
+        final Resume r1 = new Resume("Kirk Hammett");
+        final Resume r2 = new Resume("Lars Ulrich");
+        final Resume r3 = new Resume("James Hetfield");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
@@ -23,7 +23,7 @@ public class MainTestArrayStorage {
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+//        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
