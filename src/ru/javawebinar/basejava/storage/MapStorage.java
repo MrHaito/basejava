@@ -2,19 +2,21 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapStorage extends AbstractStorage{
-    protected final Map<String, Resume> STORAGE = new LinkedHashMap<>();
+    protected final Map<String, Resume> STORAGE = new HashMap<>();
     @Override
     public void clear() {
         STORAGE.clear();
     }
 
     @Override
-    public Resume[] getAll() {
-        return STORAGE.values().toArray(new Resume[0]);
+    public List<Resume> getAllSorted() {
+        Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
+        List<Resume> sortedStorage = new ArrayList<>(STORAGE.values());
+        sortedStorage.sort(RESUME_COMPARATOR);
+        return sortedStorage;
     }
 
     @Override

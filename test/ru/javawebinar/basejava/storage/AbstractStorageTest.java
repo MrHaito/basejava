@@ -8,6 +8,9 @@ import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AbstractStorageTest {
@@ -17,11 +20,15 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
+    private static final String FULLNAME_1 = "James Hetfield";
+    private static final String FULLNAME_2 = "Lars Ulrich";
+    private static final String FULLNAME_3 = "Kirk Hammett";
+    private static final String FULLNAME_4 = "Robert Trujillo";
     private static final String UUID_NOT_EXIST = "dummy";
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+    private static final Resume RESUME_1 = new Resume(UUID_1, FULLNAME_1);
+    private static final Resume RESUME_2 = new Resume(UUID_2, FULLNAME_2);
+    private static final Resume RESUME_3 = new Resume(UUID_3, FULLNAME_3);
+    private static final Resume RESUME_4 = new Resume(UUID_4, FULLNAME_4);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -39,7 +46,8 @@ public abstract class AbstractStorageTest {
     void clear() {
         storage.clear();
         assertSize(0);
-        Assertions.assertArrayEquals(new Resume[]{}, storage.getAll());
+        List<Resume> resumeList = new ArrayList<>();
+        Assertions.assertEquals(resumeList, storage.getAllSorted());
     }
 
     @Test
@@ -62,7 +70,7 @@ public abstract class AbstractStorageTest {
         int storageLength  = AbstractArrayStorage.STORAGE_LIMIT;
         try {
             for (int i = 0; i < storageLength; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume(FULLNAME_1));
             }
         } catch (StorageException e) {
             fail("Переполнение произошло раньше времени");
@@ -74,7 +82,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     void update() {
-        Resume resume = new Resume(UUID_1);
+        Resume resume = new Resume(UUID_1, FULLNAME_1);
         storage.update(resume);
         Assertions.assertSame(resume, storage.get(resume.getUuid()));
     }
@@ -116,10 +124,13 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void getAll() {
-        storage.getAll();
-        Assertions.assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3},
-                storage.getAll());
+    void getAllSorted() {
+        List<Resume> resumeList = new ArrayList<>();
+        resumeList.add(0, RESUME_1);
+        resumeList.add(1, RESUME_3);
+        resumeList.add(2, RESUME_2);
+        Assertions.assertEquals(resumeList,
+                storage.getAllSorted());
     }
 
     @Test
