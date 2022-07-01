@@ -3,6 +3,8 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.exception.StorageException;
@@ -13,6 +15,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses ( {
+        ArrayStorageTest.class,
+        SortedArrayStorageTest.class,
+        ListStorageTest.class,
+        MapStorageTest.class,
+        SortedArrayStorageTest.class
+})
 public abstract class AbstractStorageTest {
 
     private final Storage storage;
