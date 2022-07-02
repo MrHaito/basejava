@@ -1,29 +1,16 @@
 package ru.javawebinar.basejava.storage;
 
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses ( {
-        ArrayStorageTest.class,
-        SortedArrayStorageTest.class,
-        ListStorageTest.class,
-        MapStorageTest.class,
-        SortedArrayStorageTest.class
-})
 public abstract class AbstractStorageTest {
 
     private final Storage storage;
@@ -45,6 +32,7 @@ public abstract class AbstractStorageTest {
         this.storage = storage;
     }
 
+
     @BeforeEach
     public void setUp() throws Exception {
         storage.clear();
@@ -54,7 +42,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void clear() {
+    public void clear() {
         storage.clear();
         assertSize(0);
         List<Resume> resumeList = new ArrayList<>();
@@ -62,51 +50,35 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void save() {
+    public void save() {
         storage.save(RESUME_4);
         assertGet(RESUME_4);
         assertSize(4);
     }
 
     @Test
-    void saveExist() {
+    public void saveExist() {
         ExistStorageExeption thrown = Assertions.assertThrows(ExistStorageExeption.class, () -> {
             storage.save(RESUME_1);
         }, "ExistStorageExeption должно быть");
     }
 
     @Test
-    void saveOverflow() throws NoSuchFieldException, IllegalAccessException {
-        storage.clear();
-        int storageLength  = AbstractArrayStorage.STORAGE_LIMIT;
-        try {
-            for (int i = 0; i < storageLength; i++) {
-                storage.save(new Resume(FULLNAME_1));
-            }
-        } catch (StorageException e) {
-            fail("Переполнение произошло раньше времени");
-        }
-        StorageException thrown = Assertions.assertThrows(StorageException.class, () -> {
-            storage.save(RESUME_4);
-        });
-    }
-
-    @Test
-    void update() {
+    public void update() {
         Resume resume = new Resume(UUID_1, FULLNAME_1);
         storage.update(resume);
         Assertions.assertSame(resume, storage.get(resume.getUuid()));
     }
 
     @Test
-    void updateNotExist() {
+    public void updateNotExist() {
         NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
             storage.update(new Resume(UUID_NOT_EXIST));
         });
     }
 
     @Test
-    void get() {
+    public void get() {
         assertGet(RESUME_1);
         assertGet(RESUME_2);
         assertGet(RESUME_3);
@@ -120,7 +92,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void delete() {
+    public void delete() {
         storage.delete(UUID_1);
         NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
             storage.get(UUID_1);
@@ -128,14 +100,14 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void deleteNotExist() {
+    public void deleteNotExist() {
         NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
             storage.delete(UUID_NOT_EXIST);
         });
     }
 
     @Test
-    void getAllSorted() {
+    public void getAllSorted() {
         List<Resume> resumeList = new ArrayList<>();
         resumeList.add(0, RESUME_1);
         resumeList.add(1, RESUME_3);
@@ -145,7 +117,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void size() {
+    public void size() {
         assertSize(3);
     }
 
