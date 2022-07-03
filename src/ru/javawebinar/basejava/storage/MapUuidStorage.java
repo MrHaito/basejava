@@ -4,19 +4,11 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class MapStorageAlternate extends AbstractStorage{
+public class MapUuidStorage extends AbstractStorage{
     protected final Map<String, Resume> STORAGE = new HashMap<>();
     @Override
     public void clear() {
         STORAGE.clear();
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
-        List<Resume> sortedStorage = new ArrayList<>(STORAGE.values());
-        sortedStorage.sort(RESUME_COMPARATOR);
-        return sortedStorage;
     }
 
     @Override
@@ -26,32 +18,40 @@ public class MapStorageAlternate extends AbstractStorage{
 
     @Override
     protected Object findSearchKey(String uuid) {
-        return STORAGE.get(uuid);
+        return uuid;
     }
 
     @Override
     protected boolean isExist(Object object) {
-        return object != null;
+        if (object == null) {
+            return false;
+        }
+        return STORAGE.containsKey((String) object);
     }
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        STORAGE.put(r.getUuid(), r);
+        STORAGE.put((String) searchKey, r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        STORAGE.remove(resume.getUuid());
+        STORAGE.remove((String) searchKey);
     }
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        STORAGE.put(r.getUuid(), r);
+        STORAGE.put((String) searchKey, r);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return (Resume) searchKey;
+        return STORAGE.get((String) searchKey);
+    }
+
+    @Override
+    protected List<Resume> getResumeList() {
+        List<Resume> resumes = new ArrayList<>(STORAGE.values());
+        return resumes;
     }
 }
