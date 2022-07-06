@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected final Resume[] STORAGE = new Resume[STORAGE_LIMIT];
@@ -26,7 +26,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Место закончилось", r.getUuid());
         }
@@ -35,30 +35,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(Integer searchKey) {
         doDeleteElement(searchKey);
         STORAGE[size - 1] = null;
         size--;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        STORAGE[(int) searchKey] = r;
+    protected void doUpdate(Resume r, Integer searchKey) {
+        STORAGE[searchKey] = r;
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return STORAGE[(int) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return STORAGE[searchKey];
     }
 
     @Override
-    protected boolean isExist(Object object) {
-        return (int) object >= 0;
+    protected boolean isExist(Integer object) {
+        return object >= 0;
     }
 
-    protected abstract void doSaveElement(Resume r, Object searchKey);
+    protected abstract void doSaveElement(Resume r, Integer searchKey);
 
-    protected abstract void doDeleteElement(Object searchKey);
+    protected abstract void doDeleteElement(Integer searchKey);
 
     @Override
     protected List<Resume> getResumeList() {
