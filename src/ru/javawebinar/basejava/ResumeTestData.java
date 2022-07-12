@@ -22,8 +22,8 @@ public class ResumeTestData {
 
 
         SectionType objective = SectionType.OBJECTIVE;
-        TextSection objective_descripton = new TextSection();
-        objective_descripton.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
+        TextSection objective_description = new TextSection();
+        objective_description.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
                 "Enterprise " + "технологиям");
 
         SectionType personal = SectionType.PERSONAL;
@@ -164,7 +164,7 @@ public class ResumeTestData {
 
 
 
-        r1.addSection(objective, objective_descripton);
+        r1.addSection(objective, objective_description);
         r1.addSection(personal, personal_description);
         r1.addSection(achievement, achievement_description);
         r1.addSection(qualifications, qualifications_description);
