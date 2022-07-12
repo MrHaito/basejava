@@ -14,7 +14,7 @@ public class ListSection extends Section {
     public String toString() {
         String results = "";
         for (String string : description) {
-            results += "\u2023" + string + "\n";
+            results += string + "\n";
         }
         return results;
     }
