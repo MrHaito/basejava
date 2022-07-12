@@ -64,6 +64,7 @@ public class Resume {
         for (ContactType contactType : ContactType.values()) {
             System.out.println(contactType + contacts.get(contactType));
         }
+        System.out.println(" ");
     }
 
     public void getAllSection() {

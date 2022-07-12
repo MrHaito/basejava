@@ -18,7 +18,7 @@ public class ResumeTestData {
         r1.addContact(profileLinkedin, "Профиль LinkedIn");
         r1.addContact(profileGithub, "Профиль GitHub");
         r1.addContact(profileStackOverFlow, "Профиль StackOverFlow");
-        r1.addContact(homePage, "Домашняя страница\n");
+        r1.addContact(homePage, "Домашняя страница");
 
 
         SectionType objective = SectionType.OBJECTIVE;
