@@ -32,6 +32,14 @@ public class Resume {
         return fullName;
     }
 
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,18 +66,5 @@ public class Resume {
 
     public void addSection(SectionType type, Section value) {
         sections.put(type, value);
-    }
-
-    public void getAllContacts() {
-        for (ContactType contactType : ContactType.values()) {
-            System.out.println(contactType + contacts.get(contactType));
-        }
-        System.out.println(" ");
-    }
-
-    public void getAllSection() {
-        for (SectionType sectionType : SectionType.values()) {
-            System.out.println(sectionType + "\n" + sections.get(sectionType));
-        }
     }
 }

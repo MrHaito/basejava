@@ -172,8 +172,13 @@ public class ResumeTestData {
         r1.addSection(education, education_description);
 
 
-        r1.getAllContacts();
-        r1.getAllSection();
+        for (ContactType type : ContactType.values()) {
+            System.out.println(type + r1.getContacts().get(type));
+        }
+        System.out.println(" ");
+        for (SectionType type : SectionType.values()) {
+            System.out.println(type + "\n" + r1.getSections().get(type));
+        }
     }
 }
 
