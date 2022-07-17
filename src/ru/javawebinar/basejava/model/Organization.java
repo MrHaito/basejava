@@ -14,8 +14,7 @@ public class Organization {
     }
 
     public Organization(String name) {
-        Objects.requireNonNull(name);
-        this.name = name;
+        this.name = Objects.requireNonNull(name, "Name must not be null");
     }
 
     public Organization(String name, String website) {
