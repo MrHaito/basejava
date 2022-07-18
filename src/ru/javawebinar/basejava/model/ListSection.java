@@ -31,10 +31,10 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        String results = "";
+        StringBuilder results = new StringBuilder();
         for (String string : strings) {
-            results += string + "\n";
+            results.append(string).append("\n");
         }
-        return results;
+        return results.toString();
     }
 }

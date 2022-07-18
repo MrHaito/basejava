@@ -1,30 +1,31 @@
 package ru.javawebinar.basejava.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period {
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String position;
     private String description;
 
-    public Period(String startDate, String endDate, String position) {
+    public Period(LocalDate startDate, LocalDate endDate, String position) {
         this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
         this.endDate = Objects.requireNonNull(endDate, "EndDate must not be null");
         this.position = Objects.requireNonNull(position, "Position must not be null");
     }
 
-    public Period(String startDate, String endDate, String position, String description) {
+    public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this(startDate, endDate, position);
         Objects.requireNonNull(description);
         this.description = description;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

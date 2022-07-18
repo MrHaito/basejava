@@ -2,9 +2,17 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 public class ResumeTestData {
+
     public static void main(String[] args) {
-        Resume r1 = new Resume("Григорий Кислин");
+
+    }
+
+    public static Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
         ContactType phone = ContactType.PHONE;
         ContactType skype = ContactType.SKYPE;
         ContactType email = ContactType.EMAIL;
@@ -12,13 +20,13 @@ public class ResumeTestData {
         ContactType profileGithub = ContactType.PROFILE_GITHUB;
         ContactType profileStackOverFlow = ContactType.PROFILE_STACKOVERFLOW;
         ContactType homePage = ContactType.HOMEPAGE;
-        r1.addContact(phone, "+7(921) 855-0482");
-        r1.addContact(skype, "skype:grigory.kislin");
-        r1.addContact(email, "gkislin@yandex.ru");
-        r1.addContact(profileLinkedin, "Профиль LinkedIn");
-        r1.addContact(profileGithub, "Профиль GitHub");
-        r1.addContact(profileStackOverFlow, "Профиль StackOverFlow");
-        r1.addContact(homePage, "Домашняя страница");
+        resume.addContact(phone, "+7(921) 855-0482");
+        resume.addContact(skype, "skype:grigory.kislin");
+        resume.addContact(email, "gkislin@yandex.ru");
+        resume.addContact(profileLinkedin, "Профиль LinkedIn");
+        resume.addContact(profileGithub, "Профиль GitHub");
+        resume.addContact(profileStackOverFlow, "Профиль StackOverFlow");
+        resume.addContact(homePage, "Домашняя страница");
 
 
         SectionType objective = SectionType.OBJECTIVE;
@@ -87,11 +95,14 @@ public class ResumeTestData {
         SectionType experience = SectionType.EXPERIENCE;
         OrganizationSection experience_description = new OrganizationSection();
         Organization organization = new Organization("Java Online Projects", "http://javaops.ru/");
-        organization.addPeriod(new Period("10/2013", "Сейчас", "Автор проекта.",
+        organization.addPeriod(new Period(LocalDate.of(2013, Month.OCTOBER.getValue(), 1), LocalDate.of(2022,
+                Month.AUGUST.getValue(), 1),
+                "Автор " +
+                        "проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."));
         experience_description.addOrganization(organization);
         organization = new Organization("Wrike", "https://www.wrike" + ".com/");
-        organization.addPeriod(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и " +
+        /*organization.addPeriod(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и " +
                 "разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, " +
                 "Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         experience_description.addOrganization(organization);
@@ -131,9 +142,9 @@ public class ResumeTestData {
         organization = new Organization("Alcatel", "http://www.alcatel.ru/");
         organization.addPeriod(new Period("09/1997", "01/2005", "Инженер по аппаратному и программному тестированию",
                 "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."));
-        experience_description.addOrganization(organization);
+        experience_description.addOrganization(organization);*/
 
-        SectionType education = SectionType.EDUCATION;
+        /*SectionType education = SectionType.EDUCATION;
         OrganizationSection education_description = new OrganizationSection();
         organization = new Organization("Coursera", "https://www.coursera.org/course/progfun");
         organization.addPeriod(new Period("03/2013", "05/2013", "'Functional Programming Principles in Scala' by Martin " +
@@ -160,25 +171,27 @@ public class ResumeTestData {
         education_description.addOrganization(organization);
         organization = new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/");
         organization.addPeriod(new Period("09/1984", "06/1987", "Закончил с отличием"));
-        education_description.addOrganization(organization);
+        education_description.addOrganization(organization);*/
 
 
 
-        r1.addSection(objective, objective_description);
-        r1.addSection(personal, personal_description);
-        r1.addSection(achievement, achievement_description);
-        r1.addSection(qualifications, qualifications_description);
-        r1.addSection(experience, experience_description);
-        r1.addSection(education, education_description);
+        resume.addSection(objective, objective_description);
+        resume.addSection(personal, personal_description);
+        resume.addSection(achievement, achievement_description);
+        resume.addSection(qualifications, qualifications_description);
+        resume.addSection(experience, experience_description);
+//        r1.addSection(education, education_description);
 
 
         for (ContactType type : ContactType.values()) {
-            System.out.println(type + r1.getContacts().get(type));
+            System.out.println(type + resume.getContacts().get(type));
         }
         System.out.println(" ");
         for (SectionType type : SectionType.values()) {
-            System.out.println(type + "\n" + r1.getSections().get(type));
+            System.out.println(type + "\n" + resume.getSections().get(type));
         }
+
+        return resume;
     }
 }
 

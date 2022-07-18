@@ -12,10 +12,10 @@ public class OrganizationSection extends Section {
 
     @Override
     public String toString() {
-        String results = "";
+        StringBuilder results = new StringBuilder();
         for (Organization organization : organizations) {
-            results += organization.getName() + "\n" + organization + "\n";
+            results.append(organization.getName()).append("\n").append(organization).append("\n");
         }
-        return results;
+        return results.toString();
     }
 }

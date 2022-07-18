@@ -4,6 +4,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
@@ -14,6 +15,7 @@ import java.util.List;
 public abstract class AbstractStorageTest {
 
     private final Storage storage;
+
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -23,10 +25,10 @@ public abstract class AbstractStorageTest {
     private static final String FULLNAME_3 = "Kirk Hammett";
     private static final String FULLNAME_4 = "Robert Trujillo";
     private static final String UUID_NOT_EXIST = "dummy";
-    private static final Resume RESUME_1 = new Resume(UUID_1, FULLNAME_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2, FULLNAME_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3, FULLNAME_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4, FULLNAME_4);
+    private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1, FULLNAME_1);
+    private static final Resume RESUME_2 = ResumeTestData.createResume(UUID_2, FULLNAME_2);
+    private static final Resume RESUME_3 = ResumeTestData.createResume(UUID_3, FULLNAME_3);
+    private static final Resume RESUME_4 = ResumeTestData.createResume(UUID_4, FULLNAME_4);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
