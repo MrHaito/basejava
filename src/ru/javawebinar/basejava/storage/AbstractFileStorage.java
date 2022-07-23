@@ -12,7 +12,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
 
     protected AbstractFileStorage(File directory) {
-        if (directory.isDirectory()) {
+        if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
         if (!directory.canRead() || !directory.canWrite()) {
@@ -101,7 +101,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return 0;
     }
 
-    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
+    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
-    protected abstract Resume doRead(InputStream file);
+    protected abstract Resume doRead(InputStream is);
 }
