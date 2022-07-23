@@ -3,8 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +51,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            doWrite(r, file);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -60,19 +59,23 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("File read error", file.getName(), e);
+        }
     }
 
     @Override
     protected List<Resume> getResumeList() {
         List<Resume> list = new ArrayList<>();
         File[] fileList = directory.listFiles();
-        if (fileList != null) {
+        try {
             for (File file : fileList) {
-                list.add(doRead(file));
+                list.add(doRead(new BufferedInputStream(new FileInputStream(file))));
             }
-        } else {
-            throw new StorageException("Cant get", "storage");
+        } catch (IOException e) {
+            throw new StorageException("Cant get", "storage", e);
         }
         return list;
     }
@@ -98,7 +101,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return 0;
     }
 
-    protected abstract void doWrite(Resume r, File file) throws IOException;
+    protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(InputStream file);
 }
