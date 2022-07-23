@@ -1,9 +1,13 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListSection extends Section {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final List<String> strings = new ArrayList<>();
 
     public List<String> getStrings() {

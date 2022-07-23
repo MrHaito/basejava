@@ -1,9 +1,13 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrganizationSection extends Section {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     List<Organization> organizations = new ArrayList<>();
 
     public void addOrganization(Organization organization) {
