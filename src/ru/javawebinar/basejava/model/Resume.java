@@ -1,11 +1,12 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Initial resume class
  */
-public class Resume {
+public class Resume implements Serializable {
 
     // Unique identifier
     private final String uuid;
