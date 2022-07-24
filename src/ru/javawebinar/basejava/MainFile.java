@@ -3,6 +3,7 @@ package ru.javawebinar.basejava;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainFile {
     public static void main(String[] args) throws Exception {
@@ -28,27 +29,22 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        dir = new File("E:\\Java\\basejava");
-        showFilesAndDirectories(dir);
+        File file = new File("E:\\Java\\basejava\\src");
+        File[] fileList = file.listFiles();
+        RecursivePrint(fileList, 0, 0);
     }
 
-    public static void showFilesAndDirectories(File f) throws Exception  {
-        if (!f.isDirectory ()) {
-            System.out.println (f.getName ());
+    static void RecursivePrint(File[] arr, int index, int level) {
+        if (index == arr.length) return;
+        for (int i = 0; i < level; i++) {
+            System.out.print(" ");
         }
-        if (f.isDirectory ()) {
-            try {
-                System.out.println(f.getName());
-                File[] child = f.listFiles();
-                if (child != null) {
-                    for (File file : child) {
-                        showFilesAndDirectories(file);
-                    }
-                }
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+        if (arr[index].isFile()) {
+            System.out.println(arr[index].getName());
+        } else if (arr[index].isDirectory()) {
+            System.out.println(arr[index].getName());
+            RecursivePrint(Objects.requireNonNull(arr[index].listFiles()), 0, level + 1);
         }
+        RecursivePrint(arr, ++index, level);
     }
 }
