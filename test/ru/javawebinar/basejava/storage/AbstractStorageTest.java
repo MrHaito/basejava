@@ -9,15 +9,12 @@ import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
 
-    //    protected static final File STORAGE_DIR = new File("E:\\Java\\basejava\\storage");
-    protected static final Path STORAGE_DIR = Paths.get("E:\\Java\\basejava\\storage").toAbsolutePath();
+    protected static final String STORAGE_DIR = "E:\\Java\\basejava\\storage";
 
     private final Storage storage;
 
