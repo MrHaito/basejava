@@ -9,13 +9,15 @@ import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
 
-    protected static final File STORAGE_DIR = new File("E:\\Java\\basejava\\storage");
+    //    protected static final File STORAGE_DIR = new File("E:\\Java\\basejava\\storage");
+    protected static final Path STORAGE_DIR = Paths.get("E:\\Java\\basejava\\storage").toAbsolutePath();
 
     private final Storage storage;
 
@@ -117,8 +119,7 @@ public abstract class AbstractStorageTest {
         resumeList.add(0, RESUME_1);
         resumeList.add(1, RESUME_3);
         resumeList.add(2, RESUME_2);
-        Assertions.assertEquals(resumeList,
-                storage.getAllSorted());
+        Assertions.assertEquals(resumeList, storage.getAllSorted());
     }
 
     @Test

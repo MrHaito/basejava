@@ -7,7 +7,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private Path directory;
@@ -22,7 +25,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path findSearchKey(String uuid) {
-        return Paths.get(uuid);
+        return Path.of(directory.toString() + "\\" + uuid);
     }
 
     @Override
@@ -66,21 +69,21 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Path read error", file.getFileName().toString(), e);
         }
     }
-//
-//    @Override
-//    protected List<Resume> getResumeList() {
-//        List<Resume> list = new ArrayList<>();
-//        Path[] fileList = directory.listFiles();
-//        try {
-//            for (Path file : fileList) {
-//                list.add(doRead(new BufferedInputStream(new FileInputStream(file))));
-//            }
-//        } catch (IOException e) {
-//            throw new StorageException("Cant get", "storage", e);
-//        }
-//        return list;
-//    }
-//
+
+    @Override
+    protected List<Resume> getResumeList() {
+        List<Resume> list = new ArrayList<>();
+        try {
+            List<Path> resumeList = Files.list(directory).collect(Collectors.toList());
+            for (Path file : resumeList) {
+                list.add(doRead(new BufferedInputStream(new FileInputStream(String.valueOf(file)))));
+            }
+        } catch (IOException e) {
+            throw new StorageException("Cant get", "storage", e);
+        }
+        return list;
+    }
+
     @Override
     public void clear() {
         try {
@@ -89,15 +92,16 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Path delete error", null);
         }
     }
-//
-//    @Override
-//    public int size() {
-//        Path[] list = directory.listFiles();
-//        if (list != null) {
-//            return list.length;
-//        }
-//        return 0;
-//    }
+
+    @Override
+    public int size() {
+        try {
+            List<Path> list = Files.list(directory).collect(Collectors.toList());
+            return list.size();
+        } catch (IOException e) {
+            throw new StorageException("Cant get", "storage size", e);
+        }
+    }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
