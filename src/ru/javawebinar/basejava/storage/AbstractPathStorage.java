@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
-    private Path directory;
+    private final Path directory;
 
     protected AbstractPathStorage(String dir) {
         directory = Paths.get(dir);
@@ -74,8 +74,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected List<Resume> getResumeList() {
         List<Resume> list = new ArrayList<>();
         try {
-            List<Path> resumeList = Files.list(directory).collect(Collectors.toList());
-            for (Path file : resumeList) {
+            for (Path file : Files.list(directory).collect(Collectors.toList())) {
                 list.add(doRead(new BufferedInputStream(new FileInputStream(String.valueOf(file)))));
             }
         } catch (IOException e) {
