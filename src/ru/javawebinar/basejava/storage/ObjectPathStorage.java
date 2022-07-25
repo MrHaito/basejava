@@ -1,19 +1,25 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ObjectPathStorage extends AbstractPathStorage {
+//    Тут пока методы из ObjectStreamStorage
     @Override
     protected void doWrite(Resume r, OutputStream os) throws IOException {
-
+        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
+            oos.writeObject(r);
+        }
     }
 
     @Override
     protected Resume doRead(InputStream is) throws IOException {
-        return null;
+        try (ObjectInput ois = new ObjectInputStream(is)) {
+            return (Resume) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            throw new StorageException("Error read resume", null, e);
+        }
     }
 }

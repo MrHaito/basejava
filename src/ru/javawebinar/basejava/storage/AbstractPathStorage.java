@@ -57,15 +57,15 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("IO error", file.getFileName().toString(), e);
         }
     }
-//
-//    @Override
-//    protected Resume doGet(Path file) {
-//        try {
-//            return doRead(new BufferedInputStream(new FileInputStream(file)));
-//        } catch (IOException e) {
-//            throw new StorageException("Path read error", file.getName(), e);
-//        }
-//    }
+
+    @Override
+    protected Resume doGet(Path file) {
+        try {
+            return doRead(new BufferedInputStream(new FileInputStream(String.valueOf(file))));
+        } catch (IOException e) {
+            throw new StorageException("Path read error", file.getFileName().toString(), e);
+        }
+    }
 //
 //    @Override
 //    protected List<Resume> getResumeList() {
