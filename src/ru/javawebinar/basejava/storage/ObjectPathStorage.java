@@ -4,9 +4,14 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
+import java.util.List;
 
 public class ObjectPathStorage extends AbstractPathStorage {
-//    Тут пока методы из ObjectStreamStorage
+    protected ObjectPathStorage(String dir) {
+        super(dir);
+    }
+
+    //    Тут пока методы из ObjectStreamStorage
     @Override
     protected void doWrite(Resume r, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
@@ -21,5 +26,15 @@ public class ObjectPathStorage extends AbstractPathStorage {
         } catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);
         }
+    }
+
+    @Override
+    protected List<Resume> getResumeList() {
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

@@ -81,14 +81,14 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 //        return list;
 //    }
 //
-//    @Override
-//    public void clear() {
-//        try {
-//            Files.list(directory).forEach(this::doDelete);
-//        } catch (IOException e) {
-//            throw new StorageException("Path delete error", null);
-//        }
-//    }
+    @Override
+    public void clear() {
+        try {
+            Files.list(directory).forEach(this::doDelete);
+        } catch (IOException e) {
+            throw new StorageException("Path delete error", null);
+        }
+    }
 //
 //    @Override
 //    public int size() {
