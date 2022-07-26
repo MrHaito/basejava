@@ -100,7 +100,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory).collect(Collectors.toList());
         } catch (IOException e) {
-            throw new StorageException("Cant get", "resumes list", e);
+            throw new StorageException("Cant get", "paths list", e);
         }
     }
 }
