@@ -5,21 +5,21 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectPathStorage extends AbstractPathStorage {
-    protected ObjectPathStorage(String dir) {
-        super(dir);
+public class ObjectStreamPathStorage implements StorageStrategy {
+
+    private String directory;
+
+    public ObjectStreamPathStorage(String storageDir) {
+        this.directory = storageDir;
     }
 
-    //    Тут пока методы из ObjectStreamStorage
-    @Override
-    protected void doWrite(Resume r, OutputStream os) throws IOException {
+    public void doWrite(Resume r, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(r);
         }
     }
 
-    @Override
-    protected Resume doRead(InputStream is) throws IOException {
+    public Resume doRead(InputStream is) throws IOException {
         try (ObjectInput ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {
