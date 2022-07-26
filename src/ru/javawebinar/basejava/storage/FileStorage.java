@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.strategy.StorageStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public abstract class FileStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Cant save", file.getName(), e);
         }
         doUpdate(r, file);
     }
@@ -56,7 +57,7 @@ public abstract class FileStorage extends AbstractStorage<File> {
         try {
             strategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Cant update", file.getName(), e);
         }
     }
 
@@ -72,9 +73,8 @@ public abstract class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> getResumeList() {
         List<Resume> list = new ArrayList<>();
-        File[] fileList = directory.listFiles();
         try {
-            for (File file : fileList) {
+            for (File file : collectResumesInArray()) {
                 list.add(strategy.doRead(new BufferedInputStream(new FileInputStream(file))));
             }
         } catch (IOException e) {
@@ -85,9 +85,8 @@ public abstract class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] list = directory.listFiles();
-        if (list != null) {
-            for (File file : list) {
+        if (collectResumesInArray() != null) {
+            for (File file : collectResumesInArray()) {
                 doDelete(file);
             }
         } else {
@@ -97,10 +96,13 @@ public abstract class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        File[] list = directory.listFiles();
-        if (list != null) {
-            return list.length;
+        if (collectResumesInArray() != null) {
+            return collectResumesInArray().length;
         }
         return 0;
+    }
+
+    private File[] collectResumesInArray() {
+        return directory.listFiles();
     }
 }
