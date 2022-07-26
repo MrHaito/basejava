@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public abstract class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    private StorageStrategy strategy;
+    private final StorageStrategy strategy;
 
     protected PathStorage(String dir, StorageStrategy strategy) {
         directory = Paths.get(dir);

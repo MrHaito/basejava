@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public abstract class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    private StorageStrategy strategy;
+    private final StorageStrategy strategy;
 
     protected FileStorage(String dir, StorageStrategy strategy) {
         File directory = new File(dir);
