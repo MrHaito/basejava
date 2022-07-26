@@ -85,24 +85,21 @@ public abstract class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        if (collectResumesInArray() != null) {
-            for (File file : collectResumesInArray()) {
-                doDelete(file);
-            }
-        } else {
-            throw new StorageException("Cant clear", "storage");
+        for (File file : collectResumesInArray()) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        if (collectResumesInArray() != null) {
-            return collectResumesInArray().length;
-        }
-        return 0;
+        return collectResumesInArray().length;
     }
 
     private File[] collectResumesInArray() {
-        return directory.listFiles();
+        if (directory.listFiles() != null) {
+            return directory.listFiles();
+        } else {
+            throw new StorageException("Cant clear", "storage");
+        }
     }
 }
