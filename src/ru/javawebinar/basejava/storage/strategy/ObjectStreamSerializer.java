@@ -1,15 +1,15 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.strategy;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamPathStorage implements StorageStrategy {
+public class ObjectStreamSerializer implements StorageStrategy {
 
     private String directory;
 
-    public ObjectStreamPathStorage(String storageDir) {
+    public ObjectStreamSerializer(String storageDir) {
         this.directory = storageDir;
     }
 
