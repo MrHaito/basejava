@@ -6,13 +6,6 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.*;
 
 public class ObjectStreamSerializer implements StorageStrategy {
-
-    private String directory;
-
-    public ObjectStreamSerializer(String storageDir) {
-        this.directory = storageDir;
-    }
-
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(r);
