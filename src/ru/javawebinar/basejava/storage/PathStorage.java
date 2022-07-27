@@ -76,12 +76,8 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> getResumeList() {
         List<Resume> list = new ArrayList<>();
-        try {
-            for (Path file : collectResumesInList()) {
-                list.add(strategy.doRead(new BufferedInputStream(new FileInputStream(String.valueOf(file)))));
-            }
-        } catch (IOException e) {
-            throw new StorageException("Cant get", "storage", e);
+        for (Path file : collectResumesInList()) {
+            list.add(doGet(file));
         }
         return list;
     }

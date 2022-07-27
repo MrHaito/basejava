@@ -73,13 +73,9 @@ public abstract class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> getResumeList() {
         List<Resume> list = new ArrayList<>();
-        try {
             for (File file : collectResumesInArray()) {
-                list.add(strategy.doRead(new BufferedInputStream(new FileInputStream(file))));
+                list.add(doGet(file));
             }
-        } catch (IOException e) {
-            throw new StorageException("Cant get", "storage", e);
-        }
         return list;
     }
 
