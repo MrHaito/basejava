@@ -1,18 +1,29 @@
 package ru.javawebinar.basejava.model;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import ru.javawebinar.basejava.util.LocalDateAdapter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate startDate;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate endDate;
     private String position;
     private String description;
+
+    public Period() {
+    }
 
     public Period(LocalDate startDate, LocalDate endDate, String position) {
         this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
@@ -22,8 +33,7 @@ public class Period implements Serializable {
 
     public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this(startDate, endDate, position);
-        Objects.requireNonNull(description);
-        this.description = description;
+        this.description = Objects.requireNonNull(description);;
     }
 
     public LocalDate getStartDate() {
@@ -46,25 +56,13 @@ public class Period implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Period period = (Period) o;
-
-        if (getStartDate() != null ? !getStartDate().equals(period.getStartDate()) : period.getStartDate() != null)
-            return false;
-        if (getEndDate() != null ? !getEndDate().equals(period.getEndDate()) : period.getEndDate() != null)
-            return false;
-        if (getPosition() != null ? !getPosition().equals(period.getPosition()) : period.getPosition() != null)
-            return false;
-        return getDescription() != null ? getDescription().equals(period.getDescription()) : period.getDescription() == null;
+        return getStartDate().equals(period.getStartDate()) && getEndDate().equals(period.getEndDate()) && getPosition().equals(period.getPosition()) && getDescription().equals(period.getDescription());
     }
 
     @Override
     public int hashCode() {
-        int result = getStartDate() != null ? getStartDate().hashCode() : 0;
-        result = 31 * result + (getEndDate() != null ? getEndDate().hashCode() : 0);
-        result = 31 * result + (getPosition() != null ? getPosition().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        return result;
+        return Objects.hash(getStartDate(), getEndDate(), getPosition(), getDescription());
     }
 
     @Override

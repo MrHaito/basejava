@@ -10,13 +10,14 @@ import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
 
     protected static final String STORAGE_DIR = "E:\\Java\\basejava\\storage";
 
-    private final Storage storage;
+    protected final Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -32,7 +33,7 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3 = ResumeTestData.createResume(UUID_3, FULLNAME_3);
     private static final Resume RESUME_4 = ResumeTestData.createResume(UUID_4, FULLNAME_4);
 
-    public AbstractStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -112,11 +113,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> resumeList = new ArrayList<>();
-        resumeList.add(0, RESUME_1);
-        resumeList.add(1, RESUME_3);
-        resumeList.add(2, RESUME_2);
-        Assertions.assertEquals(resumeList, storage.getAllSorted());
+        List<Resume> sortedList = storage.getAllSorted();
+        assertSize(3);
+        Assertions.assertEquals(sortedList, new ArrayList<>(Arrays.asList(RESUME_1, RESUME_3, RESUME_2)));
     }
 
     @Test

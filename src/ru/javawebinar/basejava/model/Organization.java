@@ -1,21 +1,24 @@
 package ru.javawebinar.basejava.model;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    String name;
-    String website;
-    List<Period> periods = new ArrayList<>();
+    private String name;
+    private String website;
+    private final List<Period> periods = new ArrayList<>();
 
-    public void addPeriod(Period period) {
-        periods.add(period);
+    public Organization() {
     }
 
     public Organization(String name) {
@@ -28,6 +31,10 @@ public class Organization implements Serializable {
         this.website = website;
     }
 
+    public void addPeriod(Period period) {
+        periods.add(period);
+    }
+
     public String getName() {
         return name;
     }
@@ -36,20 +43,13 @@ public class Organization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Organization that = (Organization) o;
-
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (!Objects.equals(website, that.website)) return false;
-        return Objects.equals(periods, that.periods);
+        return getName().equals(that.getName()) && website.equals(that.website) && periods.equals(that.periods);
     }
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (website != null ? website.hashCode() : 0);
-        result = 31 * result + (periods != null ? periods.hashCode() : 0);
-        return result;
+        return Objects.hash(getName(), website, periods);
     }
 
     @Override
