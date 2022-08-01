@@ -31,12 +31,20 @@ public class Organization implements Serializable {
         this.website = website;
     }
 
-    public void addPeriod(Period period) {
-        periods.add(period);
-    }
-
     public String getName() {
         return name;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public void addPeriod(Period period) {
+        periods.add(period);
     }
 
     @Override
@@ -44,12 +52,13 @@ public class Organization implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return getName().equals(that.getName()) && website.equals(that.website) && periods.equals(that.periods);
+        return Objects.equals(name, that.name) && Objects.equals(website, that.website) && Objects.equals(periods,
+                that.periods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), website, periods);
+        return Objects.hash(name, website, periods);
     }
 
     @Override
