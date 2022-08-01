@@ -22,6 +22,10 @@ public class OrganizationSection extends Section {
         this.organizations = Objects.requireNonNull(organizations, "organizations must not be null");;
     }
 
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
     public void addOrganization(Organization organization) {
         organizations.add(organization);
     }
@@ -31,7 +35,7 @@ public class OrganizationSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return organizations.equals(that.organizations);
+        return Objects.equals(organizations, that.organizations);
     }
 
     @Override
