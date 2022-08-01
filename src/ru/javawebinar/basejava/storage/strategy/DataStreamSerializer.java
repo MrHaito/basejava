@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage.strategy;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -25,57 +26,97 @@ public class DataStreamSerializer implements StorageStrategy {
                 SectionType sectionType = entry.getKey();
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> {
-                        dos.writeUTF(entry.getKey().name());
-                        TextSection textSection = (TextSection) r.getSections().get(sectionType);
-                        dos.writeUTF(textSection.getDescription());
+                        getSectionName(dos, entry);
+                        dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        dos.writeUTF(entry.getKey().name());
-                        ListSection listSection = (ListSection) r.getSections().get(sectionType);
-                        List<String> list = listSection.getStrings();
-                        dos.writeInt(list.size());
-                        for (String string : list) {
+                        getSectionName(dos, entry);
+                        List<String> strings = ((ListSection) r.getSections().get(sectionType)).getStrings();
+                        dos.writeInt(strings.size());
+                        for (String string : strings) {
                             dos.writeUTF(string);
+                        }
+                    }
+                    case EXPERIENCE, EDUCATION -> {
+                        getSectionName(dos, entry);
+                        List<Organization> organizationList = ((OrganizationSection) r.getSections().get(sectionType)).getOrganizations();
+                        dos.writeInt(organizationList.size());
+                        for (Organization organization : organizationList) {
+                            dos.writeUTF(organization.getName());
+                            dos.writeUTF(organization.getWebsite());
+                            List<Period> periods = organization.getPeriods();
+                            dos.writeInt(periods.size());
+                            for (Period period : periods) {
+                                dos.writeUTF(period.getStartDate().toString());
+                                dos.writeUTF(period.getEndDate().toString());
+                                dos.writeUTF(period.getPosition());
+                                if (period.getDescription() != null) {
+                                    dos.writeUTF(period.getDescription());
+                                } else {
+                                    dos.writeUTF("null");
+                                }
+                            }
                         }
                     }
                 }
             }
-            //TODO implements sections
         }
     }
 
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
-            String uuid = dis.readUTF();
-            String fullName = dis.readUTF();
-            Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            Resume resume = new Resume(dis.readUTF(), dis.readUTF());
+            int contactSize = dis.readInt();
+            for (int i = 0; i < contactSize; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            int sizeSection = dis.readInt();
-            for (int i = 0; i < sizeSection; i++) {
+            int sectionSize = dis.readInt();
+            for (int i = 0; i < sectionSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> {
-                        String description = dis.readUTF();
                         TextSection textSection = new TextSection();
-                        textSection.setDescription(description);
+                        textSection.setDescription(dis.readUTF());
                         resume.addSection(sectionType, textSection);
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        int sizeListSection = dis.readInt();
+                        int listSectionSize = dis.readInt();
                         ListSection listSection = new ListSection();
-                        for (int j = 0; j < sizeListSection; j++) {
-                            String description = dis.readUTF();
-                            listSection.addDescription(description);
+                        for (int j = 0; j < listSectionSize; j++) {
+                            listSection.addDescription(dis.readUTF());
                             resume.addSection(sectionType, listSection);
                         }
                     }
+                    case EXPERIENCE, EDUCATION -> {
+                        int organizationListSize = dis.readInt();
+                        OrganizationSection organizationSection = new OrganizationSection();
+                        for (int k = 0; k < organizationListSize; k++) {
+                            Organization organization = new Organization(dis.readUTF(), dis.readUTF());
+                            int periodSize = dis.readInt();
+                            for (int l = 0; l < periodSize; l++) {
+                                LocalDate localStartDate = LocalDate.parse(dis.readUTF());
+                                LocalDate localEndDate = LocalDate.parse(dis.readUTF());
+                                String position = dis.readUTF();
+                                String description = dis.readUTF();
+                                Period period;
+                                if (description.equals("null")) {
+                                    period = new Period(localStartDate, localEndDate, position);
+                                } else {
+                                    period = new Period(localStartDate, localEndDate, position, description);
+                                }
+                                organization.addPeriod(period);
+                            }
+                            organizationSection.addOrganization(organization);
+                        }
+                        resume.addSection(sectionType, organizationSection);
+                    }
                 }
             }
-            //TODO implements sections
             return resume;
         }
+    }
+
+    private void getSectionName(DataOutputStream dos, Map.Entry<SectionType, Section> entry) throws IOException {
+        dos.writeUTF(entry.getKey().name());
     }
 }
