@@ -33,7 +33,7 @@ public class Period implements Serializable {
 
     public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this(startDate, endDate, position);
-        this.description = Objects.requireNonNull(description);;
+        this.description = description;
     }
 
     public LocalDate getStartDate() {
@@ -57,12 +57,12 @@ public class Period implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Period period = (Period) o;
-        return getStartDate().equals(period.getStartDate()) && getEndDate().equals(period.getEndDate()) && getPosition().equals(period.getPosition()) && getDescription().equals(period.getDescription());
+        return Objects.equals(startDate, period.startDate) && Objects.equals(endDate, period.endDate) && Objects.equals(position, period.position) && Objects.equals(description, period.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStartDate(), getEndDate(), getPosition(), getDescription());
+        return Objects.hash(startDate, endDate, position, description);
     }
 
     @Override
