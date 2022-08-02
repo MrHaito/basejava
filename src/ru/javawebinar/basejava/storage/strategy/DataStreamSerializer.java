@@ -11,13 +11,11 @@ public class DataStreamSerializer implements StorageStrategy {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
-
             Map<ContactType, String> contacts = r.getContacts();
             sectionWriter(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
-
             Map<SectionType, Section> sections = r.getSections();
             sectionWriter(sections.entrySet(), dos, entry -> {
                 SectionType sectionType = entry.getKey();
@@ -31,7 +29,8 @@ public class DataStreamSerializer implements StorageStrategy {
                         sectionWriter(strings, dos, dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        List<Organization> organizationList = ((OrganizationSection) r.getSections().get(sectionType)).getOrganizations();
+                        List<Organization> organizationList =
+                                ((OrganizationSection) r.getSections().get(sectionType)).getOrganizations();
                         sectionWriter(organizationList, dos, organization -> {
                             dos.writeUTF(organization.getName());
                             dos.writeUTF(organization.getWebsite());
@@ -52,10 +51,9 @@ public class DataStreamSerializer implements StorageStrategy {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            int contactSize = dis.readInt();
-            for (int i = 0; i < contactSize; i++) {
+            sectionReader(dis, () -> {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            });
             int sectionSize = dis.readInt();
             for (int i = 0; i < sectionSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -66,31 +64,27 @@ public class DataStreamSerializer implements StorageStrategy {
                         resume.addSection(sectionType, textSection);
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        int listSectionSize = dis.readInt();
                         ListSection listSection = new ListSection();
-                        for (int j = 0; j < listSectionSize; j++) {
+                        sectionReader(dis, () -> {
                             listSection.addDescription(dis.readUTF());
                             resume.addSection(sectionType, listSection);
-                        }
+                        });
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        int organizationListSize = dis.readInt();
                         OrganizationSection organizationSection = new OrganizationSection();
-                        for (int k = 0; k < organizationListSize; k++) {
+                        sectionReader(dis, () -> {
                             Organization organization = new Organization(dis.readUTF(), dis.readUTF());
-                            int periodSize = dis.readInt();
-                            for (int l = 0; l < periodSize; l++) {
+                            sectionReader(dis, () -> {
                                 LocalDate localStartDate = LocalDate.parse(dis.readUTF());
                                 LocalDate localEndDate = LocalDate.parse(dis.readUTF());
                                 String position = dis.readUTF();
                                 String description = dis.readUTF();
-                                Period period = description.equals("null")
-                                        ? new Period(localStartDate, localEndDate, position)
-                                        : new Period(localStartDate, localEndDate, position, description);
+                                Period period = description.equals("null") ? new Period(localStartDate, localEndDate,
+                                        position) : new Period(localStartDate, localEndDate, position, description);
                                 organization.addPeriod(period);
-                            }
+                            });
                             organizationSection.addOrganization(organization);
-                        }
+                        });
                         resume.addSection(sectionType, organizationSection);
                     }
                 }
@@ -99,11 +93,17 @@ public class DataStreamSerializer implements StorageStrategy {
         }
     }
 
-    private <T> void sectionWriter(Collection<T> collection,
-                                   DataOutputStream dos, sectionConsumer<T> consumer) throws IOException {
+    private <T> void sectionWriter(Collection<T> collection, DataOutputStream dos, consumerWriter<T> consumer) throws IOException {
         dos.writeInt(collection.size());
         for (T t : collection) {
             consumer.write(t);
+        }
+    }
+
+    private <T> void sectionReader(DataInputStream dis, consumerReader<T> consumer) throws IOException {
+        int size = dis.readInt();
+        for (int j = 0; j < size; j++) {
+            consumer.read();
         }
     }
 
