@@ -4,62 +4,48 @@ import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DataStreamSerializer implements StorageStrategy, customConsumer {
+public class DataStreamSerializer implements StorageStrategy {
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
 
             Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-
-            contacts.forEach((key, value) -> {
-                dos.writeUTF(key.name());
-                dos.writeUTF(value);
-            });
-
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            sectionWriter(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
+
             Map<SectionType, Section> sections = r.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+            sectionWriter(sections.entrySet(), dos, entry -> {
                 SectionType sectionType = entry.getKey();
-                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(sectionType.name());
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> {
                         dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
                         List<String> strings = ((ListSection) r.getSections().get(sectionType)).getStrings();
-                        dos.writeInt(strings.size());
-                        for (String string : strings) {
-                            dos.writeUTF(string);
-                        }
+                        sectionWriter(strings, dos, dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
                         List<Organization> organizationList = ((OrganizationSection) r.getSections().get(sectionType)).getOrganizations();
-                        dos.writeInt(organizationList.size());
-                        for (Organization organization : organizationList) {
+                        sectionWriter(organizationList, dos, organization -> {
                             dos.writeUTF(organization.getName());
                             dos.writeUTF(organization.getWebsite());
                             List<Period> periods = organization.getPeriods();
-                            dos.writeInt(periods.size());
-                            for (Period period : periods) {
+                            sectionWriter(periods, dos, period -> {
                                 dos.writeUTF(period.getStartDate().toString());
                                 dos.writeUTF(period.getEndDate().toString());
                                 dos.writeUTF(period.getPosition());
                                 dos.writeUTF(period.getDescription() != null ? period.getDescription() : "null");
-                            }
-                        }
+                            });
+                        });
                     }
                 }
-            }
+            });
         }
     }
 
@@ -113,19 +99,13 @@ public class DataStreamSerializer implements StorageStrategy, customConsumer {
         }
     }
 
-    private void writeWithExeption (Collection collection, DataOutputStream dos, ) {
-
-    }
-
-    private void functionalInterface(Consumer<? super T> action) {
-        for (Map.Entry<ContactType, String> entry : map.entrySet()) {
-            dos.writeUTF(entry.getKey().name());
-            dos.writeUTF(entry.getValue());
+    private <T> void sectionWriter(Collection<T> collection,
+                                   DataOutputStream dos, sectionConsumer<T> consumer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T t : collection) {
+            consumer.write(t);
         }
     }
 
-    @Override
-    public void consumerWrite(Object o, Object o2) throws IOException {
 
-    }
 }
