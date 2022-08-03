@@ -21,26 +21,23 @@ public class DataStreamSerializer implements StorageStrategy {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name());
                 switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> {
-                        dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
-                    }
-                    case ACHIEVEMENT, QUALIFICATIONS -> {
-                        sectionWriter(((ListSection) r.getSections().get(sectionType)).getStrings(), dos,
-                                dos::writeUTF);
-                    }
-                    case EXPERIENCE, EDUCATION -> {
-                        sectionWriter(((OrganizationSection) r.getSections().get(sectionType)).getOrganizations(),
-                                dos, organization -> {
-                            dos.writeUTF(organization.getName());
-                            dos.writeUTF(organization.getWebsite());
-                            sectionWriter(organization.getPeriods(), dos, period -> {
-                                dos.writeUTF(period.getStartDate().toString());
-                                dos.writeUTF(period.getEndDate().toString());
-                                dos.writeUTF(period.getPosition());
-                                dos.writeUTF(period.getDescription());
+                    case PERSONAL, OBJECTIVE ->
+                            dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
+                    case ACHIEVEMENT, QUALIFICATIONS ->
+                            sectionWriter(((ListSection) r.getSections().get(sectionType)).getStrings(), dos,
+                                    dos::writeUTF);
+                    case EXPERIENCE, EDUCATION ->
+                            sectionWriter(((OrganizationSection) r.getSections().get(sectionType)).getOrganizations()
+                                    , dos, organization -> {
+                                dos.writeUTF(organization.getName());
+                                dos.writeUTF(organization.getWebsite());
+                                sectionWriter(organization.getPeriods(), dos, period -> {
+                                    dos.writeUTF(period.getStartDate().toString());
+                                    dos.writeUTF(period.getEndDate().toString());
+                                    dos.writeUTF(period.getPosition());
+                                    dos.writeUTF(period.getDescription());
+                                });
                             });
-                        });
-                    }
                 }
             });
         }
@@ -56,11 +53,13 @@ public class DataStreamSerializer implements StorageStrategy {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> resume.addSection(sectionType, new TextSection(dis.readUTF()));
-                    case ACHIEVEMENT, QUALIFICATIONS -> resume.addSection(sectionType, new ListSection(returnList(dis, dis::readUTF)));
-                    case EXPERIENCE, EDUCATION -> resume.addSection(sectionType, new OrganizationSection(returnList(dis, () ->
-                            new Organization(dis.readUTF(), dis.readUTF(),
-                                    returnList(dis, () -> new Period(LocalDate.parse(dis.readUTF()),
-                                            LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()))))));
+                    case ACHIEVEMENT, QUALIFICATIONS ->
+                            resume.addSection(sectionType, new ListSection(returnList(dis, dis::readUTF)));
+                    case EXPERIENCE, EDUCATION ->
+                            resume.addSection(sectionType, new OrganizationSection(returnList(dis,
+                                    () -> new Organization(dis.readUTF(), dis.readUTF(), returnList(dis,
+                                            () -> new Period(LocalDate.parse(dis.readUTF()),
+                                                    LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()))))));
                 }
             });
             return resume;
