@@ -12,6 +12,10 @@ public class TextSection extends Section {
     public TextSection() {
     }
 
+    public TextSection(String description) {
+        this.description = description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

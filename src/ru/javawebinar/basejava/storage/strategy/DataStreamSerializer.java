@@ -25,21 +25,27 @@ public class DataStreamSerializer implements StorageStrategy {
                         dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        List<String> strings = ((ListSection) r.getSections().get(sectionType)).getStrings();
-                        sectionWriter(strings, dos, dos::writeUTF);
+//                        List<String> strings = ((ListSection) r.getSections().get(sectionType)).getStrings();
+//                        dos.writeInt(strings.size());
+//                        for (String string : strings) {
+//                            dos.writeUTF(string);
+//                        }
+
+//                        sectionWriter(strings, dos, dos::writeUTF);
+
+                        sectionWriter(((ListSection) r.getSections().get(sectionType)).getStrings(), dos,
+                                dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        List<Organization> organizationList =
-                                ((OrganizationSection) r.getSections().get(sectionType)).getOrganizations();
-                        sectionWriter(organizationList, dos, organization -> {
+                        sectionWriter(((OrganizationSection) r.getSections().get(sectionType)).getOrganizations(),
+                                dos, organization -> {
                             dos.writeUTF(organization.getName());
                             dos.writeUTF(organization.getWebsite());
-                            List<Period> periods = organization.getPeriods();
-                            sectionWriter(periods, dos, period -> {
+                            sectionWriter(organization.getPeriods(), dos, period -> {
                                 dos.writeUTF(period.getStartDate().toString());
                                 dos.writeUTF(period.getEndDate().toString());
                                 dos.writeUTF(period.getPosition());
-                                dos.writeUTF(period.getDescription() != null ? period.getDescription() : "null");
+                                dos.writeUTF(period.getDescription());
                             });
                         });
                     }
@@ -54,43 +60,28 @@ public class DataStreamSerializer implements StorageStrategy {
             sectionReader(dis, () -> {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             });
-            int sectionSize = dis.readInt();
-            for (int i = 0; i < sectionSize; i++) {
+            sectionReader(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
-                    case PERSONAL, OBJECTIVE -> {
-                        TextSection textSection = new TextSection();
-                        textSection.setDescription(dis.readUTF());
-                        resume.addSection(sectionType, textSection);
-                    }
-                    case ACHIEVEMENT, QUALIFICATIONS -> {
-                        ListSection listSection = new ListSection();
-                        sectionReader(dis, () -> {
-                            listSection.addDescription(dis.readUTF());
-                            resume.addSection(sectionType, listSection);
-                        });
-                    }
-                    case EXPERIENCE, EDUCATION -> {
-                        OrganizationSection organizationSection = new OrganizationSection();
-                        sectionReader(dis, () -> {
-                            Organization organization = new Organization(dis.readUTF(), dis.readUTF());
-                            sectionReader(dis, () -> {
-                                LocalDate localStartDate = LocalDate.parse(dis.readUTF());
-                                LocalDate localEndDate = LocalDate.parse(dis.readUTF());
-                                String position = dis.readUTF();
-                                String description = dis.readUTF();
-                                Period period = description.equals("null") ? new Period(localStartDate, localEndDate,
-                                        position) : new Period(localStartDate, localEndDate, position, description);
-                                organization.addPeriod(period);
-                            });
-                            organizationSection.addOrganization(organization);
-                        });
-                        resume.addSection(sectionType, organizationSection);
-                    }
+                    case PERSONAL, OBJECTIVE -> resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                    case ACHIEVEMENT, QUALIFICATIONS -> resume.addSection(sectionType, new ListSection(returnList(dis, dis::readUTF)));
+                    case EXPERIENCE, EDUCATION -> resume.addSection(sectionType, new OrganizationSection(returnList(dis, () ->
+                            new Organization(dis.readUTF(), dis.readUTF(),
+                                    returnList(dis, () -> new Period(LocalDate.parse(dis.readUTF()),
+                                            LocalDate.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()))))));
                 }
-            }
+            });
             return resume;
         }
+    }
+
+    private <T> List<T> returnList(DataInputStream dis, consumerList<T> consumer) throws IOException {
+        List<T> list = new ArrayList<>();
+        int size = dis.readInt();
+        for (int j = 0; j < size; j++) {
+            list.add(consumer.listReturn());
+        }
+        return list;
     }
 
     private <T> void sectionWriter(Collection<T> collection, DataOutputStream dos, consumerWriter<T> consumer) throws IOException {

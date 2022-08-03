@@ -25,15 +25,17 @@ public class Period implements Serializable {
     public Period() {
     }
 
-    public Period(LocalDate startDate, LocalDate endDate, String position) {
+//    public Period(LocalDate startDate, LocalDate endDate, String position) {
+//        this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
+//        this.endDate = Objects.requireNonNull(endDate, "EndDate must not be null");
+//        this.position = Objects.requireNonNull(position, "Position must not be null");
+//    }
+
+    public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
         this.endDate = Objects.requireNonNull(endDate, "EndDate must not be null");
         this.position = Objects.requireNonNull(position, "Position must not be null");
-    }
-
-    public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
-        this(startDate, endDate, position);
-        this.description = description;
+        this.description = description != null ? description : "";
     }
 
     public LocalDate getStartDate() {

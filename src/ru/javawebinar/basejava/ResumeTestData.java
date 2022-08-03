@@ -160,7 +160,7 @@ public class ResumeTestData {
         OrganizationSection education_description = new OrganizationSection();
         organization = new Organization("Coursera", "https://www.coursera.org/course/progfun");
         organization.addPeriod(new Period(LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2013, Month.MAY, 1),
-                "'Functional Programming Principles in Scala' by Martin Odersky"));
+                "'Functional Programming Principles in Scala' by Martin Odersky", null));
         education_description.addOrganization(organization);
 //        organization = new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course" +
 //                ".html?ID=22366");
@@ -179,10 +179,10 @@ public class ResumeTestData {
         organization = new Organization("Санкт-Петербургский национальный исследовательский университет " +
                 "информационных технологий, механики и оптики", "http://www.ifmo.ru/");
         organization.addPeriod(new Period(LocalDate.of(1993, Month.OCTOBER, 1), LocalDate.of(1996, Month.JULY, 1),
-                "Аспирантура (программист С, С++)"));
+                "Аспирантура (программист С, С++)", null));
         education_description.addOrganization(organization);
         organization.addPeriod(new Period(LocalDate.of(1987, Month.SEPTEMBER, 1), LocalDate.of(1993, Month.JULY, 1),
-                "Инженер (программист Fortran, C)"));
+                "Инженер (программист Fortran, C)", null));
         education_description.addOrganization(organization);
 //        organization = new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/");
 //        organization.addPeriod(new Period("09/1984", "06/1987", "Закончил с отличием"));

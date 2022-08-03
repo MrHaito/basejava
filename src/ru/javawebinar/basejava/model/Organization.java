@@ -16,7 +16,7 @@ public class Organization implements Serializable {
 
     private String name;
     private String website;
-    private final List<Period> periods = new ArrayList<>();
+    private List<Period> periods = new ArrayList<>();
 
     public Organization() {
     }
@@ -29,6 +29,11 @@ public class Organization implements Serializable {
         this(name);
         Objects.requireNonNull(website);
         this.website = website;
+    }
+
+    public Organization(String name, String website, List<Period> periods) {
+        this(name, website);
+        this.periods = Objects.requireNonNull(periods);
     }
 
     public String getName() {
