@@ -25,14 +25,6 @@ public class DataStreamSerializer implements StorageStrategy {
                         dos.writeUTF(((TextSection) r.getSections().get(sectionType)).getDescription());
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-//                        List<String> strings = ((ListSection) r.getSections().get(sectionType)).getStrings();
-//                        dos.writeInt(strings.size());
-//                        for (String string : strings) {
-//                            dos.writeUTF(string);
-//                        }
-
-//                        sectionWriter(strings, dos, dos::writeUTF);
-
                         sectionWriter(((ListSection) r.getSections().get(sectionType)).getStrings(), dos,
                                 dos::writeUTF);
                     }
