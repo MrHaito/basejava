@@ -54,7 +54,8 @@ public class DataStreamSerializer implements StorageStrategy {
                 switch (sectionType) {
                     case PERSONAL, OBJECTIVE -> resume.addSection(sectionType, new TextSection(dis.readUTF()));
                     case ACHIEVEMENT, QUALIFICATIONS ->
-                            resume.addSection(sectionType, new ListSection(returnList(dis, dis::readUTF)));
+                            resume.addSection(sectionType, new ListSection(returnList(dis, dis::readUTF
+                            )));
                     case EXPERIENCE, EDUCATION ->
                             resume.addSection(sectionType, new OrganizationSection(returnList(dis,
                                     () -> new Organization(dis.readUTF(), dis.readUTF(), returnList(dis,
