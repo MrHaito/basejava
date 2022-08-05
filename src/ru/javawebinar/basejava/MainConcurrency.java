@@ -56,29 +56,18 @@ public class MainConcurrency {
 
         Thread t1 = new Thread(() -> {
             synchronized (LOCK1) {
-                System.out.println("Thread 1: locked resource 1");
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                System.out.println("Thread 1: locked LOCK1");
                 synchronized (LOCK2) {
-                    System.out.println("Thread 1: locked resource 2");
+                    System.out.println("Thread 1: locked LOCK2");
                 }
             }
         });
 
         Thread t2 = new Thread(() -> {
             synchronized (LOCK2) {
-                System.out.println("Thread 2: locked resource 2");
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                System.out.println("Thread 2: locked LOCK2");
                 synchronized (LOCK1) {
-                    System.out.println("Thread 2: locked resource 1");
+                    System.out.println("Thread 2: locked LOCK1");
                 }
             }
         });
