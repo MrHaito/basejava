@@ -14,9 +14,9 @@ public class Deadlock {
 
     private static void extracted(Object lock1, Object lock2) {
         synchronized (lock1) {
-            System.out.println("Thread 1: locked LOCK1");
+            System.out.format("%s: locked %s\n", Thread.currentThread().getName(), lock1);
             synchronized (lock2) {
-                System.out.println("Thread 1: locked LOCK2");
+                System.out.format("%s: locked %s", Thread.currentThread().getName(), lock2);
             }
         }
     }

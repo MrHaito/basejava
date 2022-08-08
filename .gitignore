@@ -2,7 +2,8 @@
 out
 *.iml
 log
-
+.gitignore
 
 
 /pom.xml
+/lib/
