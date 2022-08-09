@@ -27,8 +27,7 @@ public class Streams {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         return integers.stream()
-                .filter((s) -> (s % 2 != 0 && integers.stream().reduce(0, Integer::sum) % 2 == 0)
-                        || (s % 2 == 0 && integers.stream().reduce(0, Integer::sum) % 2 != 0))
+                .filter(integers.stream().reduce(0, Integer::sum) % 2 != 0 ? s -> s % 2 == 0 : s -> s % 2 != 0)
                 .collect(Collectors.toList());
     }
 }
