@@ -4,18 +4,21 @@ package ru.javawebinar.basejava.storage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
 
-    protected static final String STORAGE_DIR = "E:\\Java\\basejava\\storage";
+//    protected static final File STORAGE_DIR = new File("E:\\Java\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected final Storage storage;
 
