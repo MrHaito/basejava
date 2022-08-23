@@ -17,7 +17,6 @@ import java.util.List;
 
 public abstract class AbstractStorageTest {
 
-//    protected static final File STORAGE_DIR = new File("E:\\Java\\basejava\\storage");
     protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected final Storage storage;

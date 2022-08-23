@@ -1,9 +1,8 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
-
-import java.time.LocalDate;
-import java.time.Month;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
 
 public class ResumeTestData {
 
@@ -18,35 +17,35 @@ public class ResumeTestData {
 //        ContactType profileGithub = ContactType.PROFILE_GITHUB;
 //        ContactType profileStackOverFlow = ContactType.PROFILE_STACKOVERFLOW;
 //        ContactType homePage = ContactType.HOMEPAGE;
-        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.addContact(ContactType.PROFILE_LINKEDIN, "Профиль LinkedIn");
-        resume.addContact(ContactType.PROFILE_GITHUB, "Профиль GitHub");
-        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "Профиль StackOverFlow");
-        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
-
-
-        SectionType objective = SectionType.OBJECTIVE;
-        TextSection objective_description = new TextSection();
-        objective_description.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
-                "Enterprise " + "технологиям");
-
-        SectionType personal = SectionType.PERSONAL;
-        TextSection personal_description = new TextSection();
-        personal_description.setDescription("Аналитический склад ума, " + "сильная" + " логика, креативность, " +
-                "инициативность. " + "Пурист кода и " + "архитектуры.");
+//        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+//        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+//        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+//        resume.addContact(ContactType.PROFILE_LINKEDIN, "Профиль LinkedIn");
+//        resume.addContact(ContactType.PROFILE_GITHUB, "Профиль GitHub");
+//        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "Профиль StackOverFlow");
+//        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
 //
-        SectionType achievement = SectionType.ACHIEVEMENT;
-        ListSection achievement_description = new ListSection();
-        achievement_description.addDescription("Организация команды и успешная реализация Java проектов для " +
-                "сторонних" + " заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система " +
-                "мониторинга показателей" + " спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, " +
-                "многомодульный Spring Boot + Vaadin " + "проект для комплексных DIY смет");
-        achievement_description.addDescription("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
-                "\"Java" + " Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы " +
-                "(JAX-RS/SOAP). " + "Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение " +
-                "проектов. Более 3500 " + "выпускников.");
+//
+//        SectionType objective = SectionType.OBJECTIVE;
+//        TextSection objective_description = new TextSection();
+//        objective_description.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
+//                "Enterprise " + "технологиям");
+//
+//        SectionType personal = SectionType.PERSONAL;
+//        TextSection personal_description = new TextSection();
+//        personal_description.setDescription("Аналитический склад ума, " + "сильная" + " логика, креативность, " +
+//                "инициативность. " + "Пурист кода и " + "архитектуры.");
+//
+//        SectionType achievement = SectionType.ACHIEVEMENT;
+//        ListSection achievement_description = new ListSection();
+//        achievement_description.addDescription("Организация команды и успешная реализация Java проектов для " +
+//                "сторонних" + " заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система " +
+//                "мониторинга показателей" + " спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, " +
+//                "многомодульный Spring Boot + Vaadin " + "проект для комплексных DIY смет");
+//        achievement_description.addDescription("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
+//                "\"Java" + " Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы " +
+//                "(JAX-RS/SOAP). " + "Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение " +
+//                "проектов. Более 3500 " + "выпускников.");
 //        achievement_description.addDescription("Реализация двухфакторной аутентификации для онлайн платформы " +
 //                "управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
 //        achievement_description.addDescription("Налаживание процесса разработки и непрерывной интеграции ERP
@@ -67,12 +66,12 @@ public class ResumeTestData {
 //                "администрирования и мониторинга системы по JMX (Jython/ Django).");
 //        achievement_description.addDescription("Реализация протоколов по приему платежей всех основных платежных " +
 //                "системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-
-        SectionType qualifications = SectionType.QUALIFICATIONS;
-        ListSection qualifications_description = new ListSection();
-        qualifications_description.addDescription("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, " +
-                "WebLogic, WSO2");
-        qualifications_description.addDescription("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+//
+//        SectionType qualifications = SectionType.QUALIFICATIONS;
+//        ListSection qualifications_description = new ListSection();
+//        qualifications_description.addDescription("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, " +
+//                "WebLogic, WSO2");
+//        qualifications_description.addDescription("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
 //        qualifications_description.addDescription("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis),
 //        " +
 //                "H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB");
@@ -97,13 +96,13 @@ public class ResumeTestData {
 //                "проектрирования, архитектурных шаблонов, UML, функционального программирования");
 //        qualifications_description.addDescription("Родной русский, английский \"upper intermediate\"");
 //
-        SectionType experience = SectionType.EXPERIENCE;
-        OrganizationSection experience_description = new OrganizationSection();
-        Organization organization = new Organization("Java Online Projects", "http://javaops.ru/");
-        organization.addPeriod(new Period(LocalDate.of(2013, Month.OCTOBER.getValue(), 1), LocalDate.of(2022,
-                Month.AUGUST.getValue(), 1), "Автор проекта.", "Создание, организация и проведение Java онлайн " +
-                "проектов и стажировок."));
-        experience_description.addOrganization(organization);
+//        SectionType experience = SectionType.EXPERIENCE;
+//        OrganizationSection experience_description = new OrganizationSection();
+//        Organization organization = new Organization("Java Online Projects", "http://javaops.ru/");
+//        organization.addPeriod(new Period(LocalDate.of(2013, Month.OCTOBER.getValue(), 1), LocalDate.of(2022,
+//                Month.AUGUST.getValue(), 1), "Автор проекта.", "Создание, организация и проведение Java онлайн " +
+//                "проектов и стажировок."));
+//        experience_description.addOrganization(organization);
 //        organization = new Organization("Wrike", "https://www.wrike" + ".com/");
 //        organization.addPeriod(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и " +
 //                "разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava,
@@ -155,13 +154,13 @@ public class ResumeTestData {
 //        organization.addPeriod(new Period("09/1997", "01/2005", "Инженер по аппаратному и программному тестированию",
 //                "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."));
 //        experience_description.addOrganization(organization);
-
-        SectionType education = SectionType.EDUCATION;
-        OrganizationSection education_description = new OrganizationSection();
-        organization = new Organization("Coursera", "https://www.coursera.org/course/progfun");
-        organization.addPeriod(new Period(LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2013, Month.MAY, 1),
-                "'Functional Programming Principles in Scala' by Martin Odersky", null));
-        education_description.addOrganization(organization);
+//
+//        SectionType education = SectionType.EDUCATION;
+//        OrganizationSection education_description = new OrganizationSection();
+//        organization = new Organization("Coursera", "https://www.coursera.org/course/progfun");
+//        organization.addPeriod(new Period(LocalDate.of(2013, Month.MARCH, 1), LocalDate.of(2013, Month.MAY, 1),
+//                "'Functional Programming Principles in Scala' by Martin Odersky", null));
+//        education_description.addOrganization(organization);
 //        organization = new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course" +
 //                ".html?ID=22366");
 //        organization.addPeriod(new Period("03/2011", "04/2011", "Курс 'Объектно-ориентированный анализ ИС. " +
@@ -176,25 +175,25 @@ public class ResumeTestData {
 //        organization.addPeriod(new Period("09/1997", "03/1998", "6 месяцев обучения цифровым телефонным сетям " +
 //                "(Москва)"));
 //        education_description.addOrganization(organization);
-        organization = new Organization("Санкт-Петербургский национальный исследовательский университет " +
-                "информационных технологий, механики и оптики", "http://www.ifmo.ru/");
-        organization.addPeriod(new Period(LocalDate.of(1993, Month.OCTOBER, 1), LocalDate.of(1996, Month.JULY, 1),
-                "Аспирантура (программист С, С++)", null));
-        education_description.addOrganization(organization);
-        organization.addPeriod(new Period(LocalDate.of(1987, Month.SEPTEMBER, 1), LocalDate.of(1993, Month.JULY, 1),
-                "Инженер (программист Fortran, C)", null));
-        education_description.addOrganization(organization);
+//        organization = new Organization("Санкт-Петербургский национальный исследовательский университет " +
+//                "информационных технологий, механики и оптики", "http://www.ifmo.ru/");
+//        organization.addPeriod(new Period(LocalDate.of(1993, Month.OCTOBER, 1), LocalDate.of(1996, Month.JULY, 1),
+//                "Аспирантура (программист С, С++)", null));
+//        education_description.addOrganization(organization);
+//        organization.addPeriod(new Period(LocalDate.of(1987, Month.SEPTEMBER, 1), LocalDate.of(1993, Month.JULY, 1),
+//                "Инженер (программист Fortran, C)", null));
+//        education_description.addOrganization(organization);
 //        organization = new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/");
 //        organization.addPeriod(new Period("09/1984", "06/1987", "Закончил с отличием"));
 //        education_description.addOrganization(organization);
-
-
-        resume.addSection(objective, objective_description);
-        resume.addSection(personal, personal_description);
-        resume.addSection(achievement, achievement_description);
-        resume.addSection(qualifications, qualifications_description);
-        resume.addSection(experience, experience_description);
-        resume.addSection(education, education_description);
+//
+//
+//        resume.addSection(objective, objective_description);
+//        resume.addSection(personal, personal_description);
+//        resume.addSection(achievement, achievement_description);
+//        resume.addSection(qualifications, qualifications_description);
+//        resume.addSection(experience, experience_description);
+//        resume.addSection(education, education_description);
 
 
         for (ContactType type : ContactType.values()) {
