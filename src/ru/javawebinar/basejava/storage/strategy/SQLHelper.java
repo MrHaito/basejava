@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SQLHelper {
+
     public final ConnectionFactory connectionFactory;
 
     public SQLHelper(ConnectionFactory connectionFactory) {
@@ -18,7 +19,8 @@ public class SQLHelper {
         try (Connection connection = connectionFactory.getConnection(); PreparedStatement ps =
                 connection.prepareStatement(sql)) {
             return sqlStrategy.execute(ps);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new StorageException(e);
         }
     }
