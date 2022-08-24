@@ -22,7 +22,7 @@ public class SQLHelper {
             return sqlStrategy.execute(ps);
         }
         catch (SQLException e) {
-            if (e.getErrorCode() == 0) {
+            if (e.getSQLState().equals("23505")) {
                 throw new ExistStorageExeption("Resume already exist");
             }
             throw new StorageException(e);
