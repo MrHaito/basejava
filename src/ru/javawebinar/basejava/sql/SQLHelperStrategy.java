@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava.storage.strategy;
+package ru.javawebinar.basejava.sql;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

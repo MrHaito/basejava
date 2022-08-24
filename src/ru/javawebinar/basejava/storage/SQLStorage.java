@@ -2,12 +2,11 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageExeption;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.SQLHelper;
+import ru.javawebinar.basejava.sql.SQLHelper;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -81,13 +80,11 @@ public class SQLStorage implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("GetAllSorted");
         List<Resume> resumes = new ArrayList<>();
-        Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
-        return sqlHelper.execute("SELECT * FROM resume", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume ORDER BY full_name, uuid", ps -> {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 resumes.add(new Resume(resultSet.getString("uuid"), resultSet.getString("full_name")));
             }
-            resumes.sort(RESUME_COMPARATOR);
             return resumes;
         });
     }
@@ -96,8 +93,7 @@ public class SQLStorage implements Storage {
     public int size() {
         return sqlHelper.execute("SELECT count(*) FROM resume", ps -> {
             ResultSet resultSet = ps.executeQuery();
-            resultSet.next();
-            return resultSet.getInt(1);
+            return resultSet.next() ? resultSet.getInt(1) : 0;
         });
     }
 }
