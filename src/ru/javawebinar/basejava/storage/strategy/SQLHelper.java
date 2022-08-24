@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage.strategy;
 
+import ru.javawebinar.basejava.exception.ExistStorageExeption;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.sql.ConnectionFactory;
 
@@ -21,6 +22,9 @@ public class SQLHelper {
             return sqlStrategy.execute(ps);
         }
         catch (SQLException e) {
+            if (e.getErrorCode() == 0) {
+                throw new ExistStorageExeption("Resume already exist");
+            }
             throw new StorageException(e);
         }
     }
