@@ -12,18 +12,13 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-//        ContactType email = ContactType.EMAIL;
-//        ContactType profileLinkedin = ContactType.PROFILE_LINKEDIN;
-//        ContactType profileGithub = ContactType.PROFILE_GITHUB;
-//        ContactType profileStackOverFlow = ContactType.PROFILE_STACKOVERFLOW;
-//        ContactType homePage = ContactType.HOMEPAGE;
-//        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
-//        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-//        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-//        resume.addContact(ContactType.PROFILE_LINKEDIN, "Профиль LinkedIn");
-//        resume.addContact(ContactType.PROFILE_GITHUB, "Профиль GitHub");
-//        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "Профиль StackOverFlow");
-//        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.PROFILE_LINKEDIN, "Профиль LinkedIn");
+        resume.addContact(ContactType.PROFILE_GITHUB, "Профиль GitHub");
+        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "Профиль StackOverFlow");
+        resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
 //
 //
 //        SectionType objective = SectionType.OBJECTIVE;

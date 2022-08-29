@@ -1,7 +1,7 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageExeption;
-import ru.javawebinar.basejava.exception.NotExistStorageExeption;
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Comparator;
@@ -52,7 +52,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         SK searchKey = findSearchKey(uuid);
         if (isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " already exist");
-            throw new ExistStorageExeption(uuid);
+            throw new ExistStorageException(uuid);
         }
         return searchKey;
     }
@@ -61,7 +61,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         SK searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " not exist");
-            throw new NotExistStorageExeption(uuid);
+            throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
