@@ -1,7 +1,7 @@
 package ru.javawebinar.basejava.exception;
 
-public class ExistStorageExeption extends StorageException {
-    public ExistStorageExeption(String uuid) {
+public class ExistStorageException extends StorageException {
+    public ExistStorageException(String uuid) {
         super("Резюме " + uuid + " уже есть", uuid);
     }
 }

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
-import ru.javawebinar.basejava.exception.ExistStorageExeption;
-import ru.javawebinar.basejava.exception.NotExistStorageExeption;
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
@@ -66,9 +66,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void saveExist() {
-        ExistStorageExeption thrown = Assertions.assertThrows(ExistStorageExeption.class, () -> {
+        ExistStorageException thrown = Assertions.assertThrows(ExistStorageException.class, () -> {
             storage.save(RESUME_1);
-        }, "ExistStorageExeption должно быть");
+        }, "ExistStorageException должно быть");
     }
 
     @Test
@@ -80,7 +80,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void updateNotExist() {
-        NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
+        NotExistStorageException thrown = Assertions.assertThrows(NotExistStorageException.class, () -> {
             storage.update(new Resume(UUID_NOT_EXIST));
         });
     }
@@ -94,7 +94,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getNotExist() {
-        NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
+        NotExistStorageException thrown = Assertions.assertThrows(NotExistStorageException.class, () -> {
             storage.get(UUID_NOT_EXIST);
         });
     }
@@ -102,14 +102,14 @@ public abstract class AbstractStorageTest {
     @Test
     public void delete() {
         storage.delete(UUID_1);
-        NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
+        NotExistStorageException thrown = Assertions.assertThrows(NotExistStorageException.class, () -> {
             storage.get(UUID_1);
         });
     }
 
     @Test
     public void deleteNotExist() {
-        NotExistStorageExeption thrown = Assertions.assertThrows(NotExistStorageExeption.class, () -> {
+        NotExistStorageException thrown = Assertions.assertThrows(NotExistStorageException.class, () -> {
             storage.delete(UUID_NOT_EXIST);
         });
     }
