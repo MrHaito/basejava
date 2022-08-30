@@ -5,10 +5,7 @@ import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SQLHelper;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +36,7 @@ public class SQLStorage implements Storage {
                 ps.setString(2, r.getFullName());
                 ps.execute();
             }
-            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, " +
-                    "value) VALUES (?, ?, ?)")) {
-                insertContactsToDB(ps, r);
-            }
+            insertContacts(r, connection);
             return null;
         });
     }
@@ -63,10 +57,7 @@ public class SQLStorage implements Storage {
                 ps.addBatch();
                 ps.executeBatch();
             }
-            try (PreparedStatement ps = connection.prepareStatement("UPDATE contact SET type = ?, value = ? WHERE " +
-                    "resume_uuid = ?")) {
-                insertContactsToDB(ps, r);
-            }
+            insertContacts(r, connection);
             return null;
         });
     }
@@ -142,13 +133,16 @@ public class SQLStorage implements Storage {
         }
     }
 
-    private void insertContactsToDB(PreparedStatement ps, Resume r) throws SQLException {
-        for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, e.getKey().name());
-            ps.setString(3, e.getValue());
-            ps.addBatch();
+    private void insertContacts(Resume r, Connection connection) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, " +
+                "value) VALUES (?, ?, ?)")) {
+            for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, e.getKey().name());
+                ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
         }
-        ps.executeBatch();
     }
 }
