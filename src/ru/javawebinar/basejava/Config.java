@@ -15,6 +15,9 @@ public class Config {
 
     private final File storageDir;
     private final Storage storage;
+    private final String dbURL;
+    private final String dbUser;
+    private final String dbPassword;
 
 
     public static Config getInstance() {
@@ -26,8 +29,10 @@ public class Config {
             Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
-            storage = new SQLStorage(props.getProperty("db.url"), props.getProperty("db.user"),
-                    props.getProperty("db.password"));
+            dbURL = props.getProperty("db.url");
+            dbUser = props.getProperty("db.user");
+            dbPassword = props.getProperty("db.password");
+            storage = new SQLStorage(dbURL, dbUser, dbPassword);
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }
@@ -39,5 +44,17 @@ public class Config {
 
     public Storage getStorage() {
         return storage;
+    }
+
+    public String getDbURL() {
+        return dbURL;
+    }
+
+    public String getDbUser() {
+        return dbUser;
+    }
+
+    public String getDbPassword() {
+        return dbPassword;
     }
 }
