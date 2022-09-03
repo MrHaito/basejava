@@ -54,14 +54,10 @@ public class SQLStorage implements Storage {
                 }
             }
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
-                ps.setString(1, r.getUuid());
-                ps.addBatch();
-                ps.executeBatch();
+                doDelete(ps, r);
             }
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
-                ps.setString(1, r.getUuid());
-                ps.addBatch();
-                ps.executeBatch();
+                doDelete(ps, r);
             }
             insertContacts(r, connection);
             insertContacts(r, connection);
@@ -85,9 +81,7 @@ public class SQLStorage implements Storage {
                    throw new NotExistStorageException(uuid);
                }
                Resume r = new Resume(uuid, rs.getString("full_name"));
-               do {
-                   addContact(rs, r);
-               } while (rs.next());
+               doGet(rs, r, this::addContact);
                resumes.add(r);
            }
            return null;
@@ -102,9 +96,7 @@ public class SQLStorage implements Storage {
                if (!rs.next()) {
                    throw new NotExistStorageException(uuid);
                }
-               do {
-                   addSection(rs, resumes.get(0));
-               } while (rs.next());
+               doGet(rs, resumes.get(0), this::addSection);
            }
            return null;
         });
@@ -135,22 +127,10 @@ public class SQLStorage implements Storage {
                 }
             }
             try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM contact WHERE resume_uuid = ?")) {
-                for (Resume r : resumes) {
-                    ps.setString(1, r.getUuid());
-                    ResultSet rs = ps.executeQuery();
-                    while (rs.next()) {
-                        addContact(rs, r);
-                    }
-                }
+                doGetAll(ps, resumes, this::addContact);
             }
             try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")) {
-                for (Resume r : resumes) {
-                    ps.setString(1, r.getUuid());
-                    ResultSet rs = ps.executeQuery();
-                    while (rs.next()) {
-                        addSection(rs, r);
-                    }
-                }
+                doGetAll(ps, resumes, this::addSection);
             }
             return null;
         });
@@ -193,10 +173,7 @@ public class SQLStorage implements Storage {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, " + "value) " +
                 "VALUES (?, ?, ?)")) {
             for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
-                ps.setString(1, r.getUuid());
-                ps.setString(2, e.getKey().name());
-                ps.setString(3, e.getValue());
-                ps.addBatch();
+                doInsert(ps, r, e);
             }
             ps.executeBatch();
         }
@@ -206,12 +183,44 @@ public class SQLStorage implements Storage {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO section (resume_uuid, type, value) " +
                 "VALUES (?, ?, ?)")) {
             for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
-                ps.setString(1, r.getUuid());
-                ps.setString(2, e.getKey().name());
-                ps.setString(3, e.getValue().toString());
-                ps.addBatch();
+                doInsert(ps, r, e);
             }
             ps.executeBatch();
         }
     }
+
+    private <K,V> void doInsert(PreparedStatement ps, Resume r, Map.Entry<K,V> e) throws SQLException {
+        ps.setString(1, r.getUuid());
+        ps.setString(2, e.getKey().toString());
+        ps.setString(3, e.getValue().toString());
+        ps.addBatch();
+    }
+
+    private void doGet(ResultSet rs, Resume r, Addable add) throws SQLException {
+        do {
+            add.addContactOrSection(rs, r);
+        } while (rs.next());
+    }
+
+    private void doGetAll(PreparedStatement ps, List<Resume> resumes, Addable add) throws SQLException {
+        for (Resume r : resumes) {
+            ps.setString(1, r.getUuid());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                add.addContactOrSection(rs, r);
+            }
+        }
+    }
+
+    private void doDelete(PreparedStatement ps, Resume r) throws SQLException {
+        ps.setString(1, r.getUuid());
+        ps.addBatch();
+        ps.executeBatch();
+    }
+
+    interface Addable {
+        void addContactOrSection(ResultSet rs, Resume r) throws SQLException;
+    }
+
+
 }
