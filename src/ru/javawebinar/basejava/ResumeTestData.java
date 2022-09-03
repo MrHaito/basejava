@@ -1,8 +1,6 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.model.*;
 
 public class ResumeTestData {
 
@@ -19,77 +17,68 @@ public class ResumeTestData {
         resume.addContact(ContactType.PROFILE_GITHUB, "Профиль GitHub");
         resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "Профиль StackOverFlow");
         resume.addContact(ContactType.HOMEPAGE, "Домашняя страница");
-//
-//
-//        SectionType objective = SectionType.OBJECTIVE;
-//        TextSection objective_description = new TextSection();
-//        objective_description.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
-//                "Enterprise " + "технологиям");
-//
-//        SectionType personal = SectionType.PERSONAL;
-//        TextSection personal_description = new TextSection();
-//        personal_description.setDescription("Аналитический склад ума, " + "сильная" + " логика, креативность, " +
-//                "инициативность. " + "Пурист кода и " + "архитектуры.");
-//
-//        SectionType achievement = SectionType.ACHIEVEMENT;
-//        ListSection achievement_description = new ListSection();
-//        achievement_description.addDescription("Организация команды и успешная реализация Java проектов для " +
-//                "сторонних" + " заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система " +
-//                "мониторинга показателей" + " спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, " +
-//                "многомодульный Spring Boot + Vaadin " + "проект для комплексных DIY смет");
-//        achievement_description.addDescription("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
-//                "\"Java" + " Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы " +
-//                "(JAX-RS/SOAP). " + "Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение " +
-//                "проектов. Более 3500 " + "выпускников.");
-//        achievement_description.addDescription("Реализация двухфакторной аутентификации для онлайн платформы " +
-//                "управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
-//        achievement_description.addDescription("Налаживание процесса разработки и непрерывной интеграции ERP
-//        системы " +
-//                "River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на
-//                " +
-//                "стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей,
-//                " +
-//                "интеграция CIFS/SMB java сервера.");
-//        achievement_description.addDescription("Реализация c нуля Rich Internet Application приложения на стеке " +
-//                "технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для
-//                алгоритмического" +
-//                " трейдинга.");
-//        achievement_description.addDescription("Создание JavaEE фреймворка для отказоустойчивого взаимодействия " +
-//                "слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики
-//                сервисов" +
-//                " и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для " +
-//                "администрирования и мониторинга системы по JMX (Jython/ Django).");
-//        achievement_description.addDescription("Реализация протоколов по приему платежей всех основных платежных " +
-//                "системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-//
-//        SectionType qualifications = SectionType.QUALIFICATIONS;
-//        ListSection qualifications_description = new ListSection();
-//        qualifications_description.addDescription("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, " +
-//                "WebLogic, WSO2");
-//        qualifications_description.addDescription("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
-//        qualifications_description.addDescription("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis),
-//        " +
-//                "H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB");
-//        qualifications_description.addDescription("Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, " +
-//                "Groovy");
-//        qualifications_description.addDescription("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts");
-//        qualifications_description.addDescription("Java Frameworks: Java 8 (Time API, Streams), Guava, Java
-//        Executor," +
-//                " MyBatis, Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, GWT" +
-//                "(SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium " +
-//                "(htmlelements).");
-//        qualifications_description.addDescription("Python: Django.");
-//        qualifications_description.addDescription("JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js");
-//        qualifications_description.addDescription("Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
-//        qualifications_description.addDescription("Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, " +
-//                "JavaMail, JAXB, StAX, SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, " +
-//                "ESB, CMIS, BPMN2, LDAP, OAuth1, OAuth2, JWT.");
-//        qualifications_description.addDescription("Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
-//        qualifications_description.addDescription("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, " +
-//                "JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer");
-//        qualifications_description.addDescription("Отличное знание и опыт применения концепций ООП, SOA, шаблонов " +
-//                "проектрирования, архитектурных шаблонов, UML, функционального программирования");
-//        qualifications_description.addDescription("Родной русский, английский \"upper intermediate\"");
+
+
+        SectionType objective = SectionType.OBJECTIVE;
+        TextSection objective_description = new TextSection();
+        objective_description.setDescription("Ведущий стажировок и " + "корпоративного обучения по Java Web и " +
+                "Enterprise " + "технологиям");
+
+        SectionType personal = SectionType.PERSONAL;
+        TextSection personal_description = new TextSection();
+        personal_description.setDescription("Аналитический склад ума, " + "сильная" + " логика, креативность, " +
+                "инициативность. " + "Пурист кода и " + "архитектуры.");
+
+        SectionType achievement = SectionType.ACHIEVEMENT;
+        ListSection achievement_description = new ListSection();
+        achievement_description.addDescription("Организация команды и успешная реализация Java проектов для " +
+                "сторонних" + " заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система " +
+                "мониторинга показателей" + " спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, " +
+                "многомодульный Spring Boot + Vaadin " + "проект для комплексных DIY смет");
+        achievement_description.addDescription("С 2013 года: разработка проектов \"Разработка Web приложения\"," +
+                "\"Java" + " Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы " +
+                "(JAX-RS/SOAP). " + "Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение " +
+                "проектов. Более 3500 " + "выпускников.");
+        achievement_description.addDescription("Реализация двухфакторной аутентификации для онлайн платформы " +
+                "управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
+        achievement_description.addDescription("Налаживание процесса разработки и непрерывной интеграции ERP системы" +
+                "River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на " +
+                "стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, " +
+                "интеграция CIFS/SMB java сервера.");
+        achievement_description.addDescription("Реализация c нуля Rich Internet Application приложения на стеке " +
+                "технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для " +
+                "алгоритмического" + " трейдинга.");
+        achievement_description.addDescription("Создание JavaEE фреймворка для отказоустойчивого взаимодействия " +
+                "слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики " +
+                "сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента " +
+                "для администрирования и мониторинга системы по JMX (Jython/ Django).");
+        achievement_description.addDescription("Реализация протоколов по приему платежей всех основных платежных " +
+                "системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
+
+        SectionType qualifications = SectionType.QUALIFICATIONS;
+        ListSection qualifications_description = new ListSection();
+        qualifications_description.addDescription("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, " +
+                "WebLogic, WSO2");
+        qualifications_description.addDescription("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+        qualifications_description.addDescription("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), "
+                + "H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB");
+        qualifications_description.addDescription("Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, " +
+                "Groovy");
+        qualifications_description.addDescription("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts");
+        qualifications_description.addDescription("Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor,"
+                + " " + " MyBatis, Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, " +
+                "GWT (SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium " +
+                "(htmlelements).");
+        qualifications_description.addDescription("Python: Django.");
+        qualifications_description.addDescription("JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js");
+        qualifications_description.addDescription("Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
+        qualifications_description.addDescription("Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, " +
+                "JavaMail, JAXB, StAX, SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, " + "ESB, CMIS, BPMN2, LDAP, OAuth1, OAuth2, JWT.");
+        qualifications_description.addDescription("Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
+        qualifications_description.addDescription("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, " +
+                "JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer");
+        qualifications_description.addDescription("Отличное знание и опыт применения концепций ООП, SOA, шаблонов " + "проектрирования, архитектурных шаблонов, UML, функционального программирования");
+        qualifications_description.addDescription("Родной русский, английский \"upper intermediate\"");
 //
 //        SectionType experience = SectionType.EXPERIENCE;
 //        OrganizationSection experience_description = new OrganizationSection();
@@ -183,10 +172,10 @@ public class ResumeTestData {
 //        education_description.addOrganization(organization);
 //
 //
-//        resume.addSection(objective, objective_description);
-//        resume.addSection(personal, personal_description);
-//        resume.addSection(achievement, achievement_description);
-//        resume.addSection(qualifications, qualifications_description);
+        resume.addSection(objective, objective_description);
+        resume.addSection(personal, personal_description);
+        resume.addSection(achievement, achievement_description);
+        resume.addSection(qualifications, qualifications_description);
 //        resume.addSection(experience, experience_description);
 //        resume.addSection(education, education_description);
 
