@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ public class ResumeServlet extends HttpServlet {
 
     private Storage storage;
 
-    public void init(Servlet config) throws ClassNotFoundException {
+    public void init()  {
         storage = Config.getInstance().getStorage();
     }
 
