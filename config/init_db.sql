@@ -15,13 +15,13 @@ create table contact
         constraint contact_resume_uuid_fk
             references resume
             on update restrict on delete cascade,
-    type        text     not null,
-    value       text     not null
+    contact_type        text     not null,
+    contact_value       text     not null
 );
 
 
 create unique index contact_uuid_type_index
-    on contact (resume_uuid, type);
+    on contact (resume_uuid, contact_type);
 
 
 create table section
@@ -33,10 +33,10 @@ create table section
         constraint section_resume_uuid_fk
             references resume
             on update restrict on delete cascade,
-    type        text     not null,
-    value       text     not null
+    section_type        text     not null,
+    section_value       text     not null
 );
 
 create unique index section_uuid_type_index
-    on section (resume_uuid, type);
+    on section (resume_uuid, section_type);
 
