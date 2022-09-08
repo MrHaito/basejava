@@ -18,6 +18,11 @@ public class SQLStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     public SQLStorage(String dbURL, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
         sqlHelper = new SQLHelper(() -> DriverManager.getConnection(dbURL, dbUser, dbPassword));
     }
 
@@ -57,7 +62,7 @@ public class SQLStorage implements Storage {
             deleteContacts(connection, r);
             deleteSections(connection, r);
             insertContacts(connection, r);
-            insertContacts(connection, r);
+            insertSections(connection, r);
             return null;
         });
     }
@@ -166,7 +171,7 @@ public class SQLStorage implements Storage {
                 ps.setString(2, e.getKey().toString());
                 Section section = e.getValue();
                 ps.setString(3, JsonParser.write(section, Section.class));
-                ps.addBatch();
+            ps.addBatch();
             }
             ps.executeBatch();
         }
