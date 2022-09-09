@@ -8,7 +8,11 @@ import ru.javawebinar.basejava.util.LocalDateAdapter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Objects;
+
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
+import static ru.javawebinar.basejava.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
@@ -25,11 +29,13 @@ public class Period implements Serializable {
     public Period() {
     }
 
-//    public Period(LocalDate startDate, LocalDate endDate, String position) {
-//        this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
-//        this.endDate = Objects.requireNonNull(endDate, "EndDate must not be null");
-//        this.position = Objects.requireNonNull(position, "Position must not be null");
-//    }
+    public Period(int startYear, Month startMonth, String title, String description) {
+        this(of(startYear, startMonth), NOW, title, description);
+    }
+
+    public Period(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+        this(of(startYear, startMonth), of(endYear, endMonth), title, description);
+    }
 
     public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
@@ -69,6 +75,6 @@ public class Period implements Serializable {
 
     @Override
     public String toString() {
-        return "Period{" + "startDate='" + startDate + '\'' + ", endDate='" + endDate + '\'' + ", position='" + position + '\'' + ", description='" + description + '\'' + '}';
+        return "Дата начала:'" + startDate + '\'' + ", Дата окончания:'" + endDate + '\'' + ", Должность:'" + position + '\'' + ", Описание:'" + description + '\'' + '}';
     }
 }

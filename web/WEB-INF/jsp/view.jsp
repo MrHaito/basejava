@@ -30,7 +30,6 @@
                      type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Section>"/>
 
         <h3><%=sectionEntry.getKey().getTitle()%></h3>
-        <%--        <p><%=sectionEntry.getValue()%></p>--%>
         <p>
         <c:set var="section" scope="session" value="${sectionEntry.key}"/>
         <c:if test="${section == 'PERSONAL' or section == 'OBJECTIVE'}">
@@ -39,7 +38,11 @@
         <c:if test="${section == 'ACHIEVEMENT' or section == 'QUALIFICATIONS'}">
             <textarea cols="100" rows="20"><%=resume.getSections().get(sectionEntry.getKey())%></textarea>
         </c:if>
+        <c:if test="${section == 'EXPERIENCE' or section == 'EDUCATION'}">
+            <textarea cols="100" rows="20"><%=resume.getSections().get(sectionEntry.getKey())%></textarea>
+        </c:if>
         </p>
+        <%--TODO добавить сюда отображение организайи--%>
     </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

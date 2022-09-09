@@ -1,8 +1,7 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.Config;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -11,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -43,9 +45,7 @@ public class ResumeServlet extends HttpServlet {
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
         }
         request.setAttribute("resume", r);
-        request.getRequestDispatcher(
-                ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
-        ).forward(request, response);
+        request.getRequestDispatcher(("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")).forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
@@ -61,6 +61,24 @@ public class ResumeServlet extends HttpServlet {
                 r.addContact(type, value);
             } else {
                 r.getContacts().remove(type);
+            }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                switch (type) {
+                    case OBJECTIVE, PERSONAL -> r.addSection(type, new TextSection(value));
+                    case ACHIEVEMENT, QUALIFICATIONS -> {
+                        ListSection listSection = new ListSection();
+                        List<String> strings = new ArrayList<>(Arrays.asList(value.split("\n")));
+                        for (String string : strings) {
+                            listSection.addDescription(string);
+                        }
+                        r.addSection(type, listSection);
+                    }
+                }
+            } else {
+                r.getSections().remove(type);
             }
         }
         storage.update(r);
