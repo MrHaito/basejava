@@ -36,7 +36,6 @@
             <textarea cols="100" rows="20"><%=resume.getSections().get(sectionEntry.getKey())%></textarea>
         </c:if>
         </p>
-        <%--TODO добавить сюда отображение организайи--%>
     </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
