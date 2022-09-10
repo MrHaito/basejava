@@ -1,8 +1,4 @@
 <jsp:useBean id="resume" scope="request" type="ru.javawebinar.basejava.model.Resume"/>
-<%--<jsp:useBean id="sectionEntry"--%>
-<%--             type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.Section>"/>--%>
-<%@ page import="ru.javawebinar.basejava.model.Resume" %>
-<%@ page import="java.util.List" %>
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -45,7 +41,7 @@
         </dl>
         </c:forEach>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <button type="reset" onclick="window.history.back()">Отменить</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

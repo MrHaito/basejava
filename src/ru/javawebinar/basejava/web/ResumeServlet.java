@@ -22,7 +22,6 @@ public class ResumeServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         storage = Config.getInstance().getStorage();
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
@@ -42,9 +41,7 @@ public class ResumeServlet extends HttpServlet {
                 return;
             }
             case "view", "edit" -> r = storage.get(uuid);
-            case "add" -> {
-                r = new Resume("test");
-            }
+            case "add" -> r = new Resume();
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
         }
         request.setAttribute("resume", r);
@@ -57,12 +54,9 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
         boolean newResume = (uuid == null || uuid.length() == 0);
-//        boolean newResume = true;
         Resume r;
-//        Resume r = new Resume(fullName);
         if (!newResume) {
             r = storage.get(uuid);
-
         } else {
             r = new Resume(fullName);
         }
@@ -93,7 +87,6 @@ public class ResumeServlet extends HttpServlet {
                 r.getSections().remove(type);
             }
         }
-//        storage.save(r);
         if (!newResume) {
             storage.update(r);
         } else {

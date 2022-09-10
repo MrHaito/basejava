@@ -1,10 +1,4 @@
 <jsp:useBean id="resume" scope="request" type="ru.javawebinar.basejava.model.Resume"/>
-<%@ page import="ru.javawebinar.basejava.model.Resume" %>
-<%@ page import="java.util.List" %>
-<%@ page import="ru.javawebinar.basejava.model.ContactType" %>
-<%@ page import="ru.javawebinar.basejava.model.SectionType" %>
-<%@ page import="ru.javawebinar.basejava.util.JsonParser" %>
-<%@ page import="ru.javawebinar.basejava.model.Section" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
