@@ -78,7 +78,9 @@ public class ResumeServlet extends HttpServlet {
                         ListSection listSection = new ListSection();
                         List<String> strings = new ArrayList<>(Arrays.asList(value.split("\n")));
                         for (String string : strings) {
-                            listSection.addDescription(string);
+                            if (!string.isBlank()) {
+                                listSection.addDescription(string);
+                            }
                         }
                         r.addSection(type, listSection);
                     }
