@@ -43,7 +43,11 @@ public class ResumeServlet extends HttpServlet {
                 return;
             }
             case "view", "edit" -> r = storage.get(uuid);
-            case "add" -> r = new Resume();
+            case "add" -> {
+                r = new Resume();
+                r.addSection(SectionType.PERSONAL, new TextSection(""));
+                r.addSection(SectionType.OBJECTIVE, new TextSection(""));
+            }
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
         }
         request.setAttribute("resume", r);
@@ -69,6 +73,7 @@ public class ResumeServlet extends HttpServlet {
                 r.addContact(type, value);
             } else {
                 r.getContacts().remove(type);
+
             }
         }
         for (SectionType type : SectionType.values()) {
@@ -95,11 +100,11 @@ public class ResumeServlet extends HttpServlet {
                         String[] endDates = request.getParameterValues(type.name() + "period_endDate");
                         OrganizationSection organizationSection = new OrganizationSection();
 
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
-                            String start = startsDates[i];
-                            String end = endDates[i];
+                            String start = "01/" + startsDates[i];
+                            String end = "01/" + endDates[i];
                             LocalDate startDate = LocalDate.parse(start, formatter);
                             LocalDate endDate = LocalDate.parse(end, formatter);
 
