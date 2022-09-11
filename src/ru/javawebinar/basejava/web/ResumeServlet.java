@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +73,8 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
+            String[] values = request.getParameterValues(type.name());
+            if (value != null) {
                 switch (type) {
                     case OBJECTIVE, PERSONAL -> r.addSection(type, new TextSection(value));
                     case ACHIEVEMENT, QUALIFICATIONS -> {
@@ -83,6 +86,28 @@ public class ResumeServlet extends HttpServlet {
                             }
                         }
                         r.addSection(type, listSection);
+                    }
+                    case EXPERIENCE, EDUCATION -> {
+                        String[] webs = request.getParameterValues(type.name() + "web");
+                        String[] positions = request.getParameterValues(type.name() + "period_position");
+                        String[] descriptions = request.getParameterValues(type.name() + "period_description");
+                        String[] startsDates = request.getParameterValues(type.name() + "period_startDate");
+                        String[] endDates = request.getParameterValues(type.name() + "period_endDate");
+                        OrganizationSection organizationSection = new OrganizationSection();
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+                        for (int i = 0; i < values.length; i++) {
+                            String name = values[i];
+                            String start = startsDates[i];
+                            String end = endDates[i];
+                            LocalDate startDate = LocalDate.parse(start, formatter);
+                            LocalDate endDate = LocalDate.parse(end, formatter);
+
+                            Organization organization = new Organization(name, webs[i]);
+                            organization.addPeriod(new Period(startDate, endDate, positions[i], descriptions[i]));
+                            organizationSection.addOrganization(organization);
+                        }
+                        r.addSection(type, organizationSection);
                     }
                 }
             } else {
