@@ -36,6 +36,7 @@
         <c:forEach var="section_type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSections(section_type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.Section"/>
+            <%--            <jsp:useBean id="organizations" type="ru.javawebinar.basejava.model.OrganizationSection"/>--%>
             <h2><a>${section_type.title}</a></h2>
             <c:choose>
                 <c:when test="${section_type == 'PERSONAL' or section_type == 'OBJECTIVE'}">
@@ -46,9 +47,8 @@
                     <textarea name="${section_type.name()}" cols="100" rows="20">${section}</textarea>
                 </c:when>
                 <c:when test="${section_type == 'EXPERIENCE' or section_type == 'EDUCATION'}">
-                    <br/>
-                    <c:forEach var="organization"
-                               items="<%=((OrganizationSection) section).getOrganizations()%>">
+                    <%--                    <c:forEach var="organization" items="${organizations.organizations}">--%>
+                    <c:forEach var="organization" items="<%=((OrganizationSection) section).getOrganizations()%>">
                         <dl>
                             <dt>Место работы:</dt>
                             <dd><input type="text" name="${section_type}" size="30"
@@ -67,7 +67,7 @@
                                            size="30"
                                            value="${period.startDate.format(DateTimeFormatter.ofPattern("MM/yyyy"))}"
                                            pattern="[0-9/]{7}"
-                                           placeholder="MM/YYYY" /></dd>
+                                           placeholder="MM/YYYY"/></dd>
                             </dl>
                             <dl>
                                 <dt>Конец работы:</dt>
@@ -76,7 +76,7 @@
                                            size="30"
                                            value="${period.endDate.format(DateTimeFormatter.ofPattern("MM/yyyy"))}"
                                            pattern="[0-9/]{7}"
-                                           placeholder="MM/YYYY" /></dd>
+                                           placeholder="MM/YYYY"/></dd>
                             </dl>
                             <dl>
                                 <dt>Должность:</dt>

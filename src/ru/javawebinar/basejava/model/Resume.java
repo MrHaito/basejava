@@ -29,6 +29,13 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
+        sections.put(SectionType.PERSONAL, new TextSection(""));
+        sections.put(SectionType.OBJECTIVE, new TextSection(" "));
+        sections.put(SectionType.ACHIEVEMENT, new ListSection(""));
+        sections.put(SectionType.QUALIFICATIONS, new ListSection(""));
+        sections.put(SectionType.EXPERIENCE,
+                new OrganizationSection((new Organization())));
+        sections.put(SectionType.EDUCATION, new OrganizationSection((new Organization())));
     }
 
     public Resume(String fullName) {

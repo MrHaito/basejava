@@ -36,6 +36,7 @@ public class ResumeServlet extends HttpServlet {
             return;
         }
         Resume r;
+        OrganizationSection organizationSection;
         switch (action) {
             case "delete" -> {
                 storage.delete(uuid);
@@ -45,8 +46,11 @@ public class ResumeServlet extends HttpServlet {
             case "view", "edit" -> r = storage.get(uuid);
             case "add" -> {
                 r = new Resume();
-                r.addSection(SectionType.PERSONAL, new TextSection(""));
-                r.addSection(SectionType.OBJECTIVE, new TextSection(""));
+//                organizationSection = new OrganizationSection();
+//                organizationSection.addOrganization(new Organization(""));
+//                request.setAttribute("organization", organizationSection);
+//                r.addSection(SectionType.PERSONAL, section);
+//                r.addSection(SectionType.OBJECTIVE, section);
             }
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
         }

@@ -19,6 +19,9 @@ public class Organization implements Serializable {
     private List<Period> periods = new ArrayList<>();
 
     public Organization() {
+        this.name = "";
+        this.website = "";
+        this.periods.add(new Period());
     }
 
     public Organization(String name) {

@@ -27,6 +27,10 @@ public class Period implements Serializable {
     private String description;
 
     public Period() {
+        this.startDate = null;
+        this.endDate = null;
+        this.position = "";
+        this.description = "";
     }
 
     public Period(int startYear, Month startMonth, String title, String description) {
