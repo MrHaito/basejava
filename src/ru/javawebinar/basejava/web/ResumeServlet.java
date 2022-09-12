@@ -46,11 +46,6 @@ public class ResumeServlet extends HttpServlet {
             case "view", "edit" -> r = storage.get(uuid);
             case "add" -> {
                 r = new Resume();
-//                organizationSection = new OrganizationSection();
-//                organizationSection.addOrganization(new Organization(""));
-//                request.setAttribute("organization", organizationSection);
-//                r.addSection(SectionType.PERSONAL, section);
-//                r.addSection(SectionType.OBJECTIVE, section);
             }
             default -> throw new IllegalArgumentException("Action " + action + " is illegal");
         }
