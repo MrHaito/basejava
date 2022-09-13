@@ -34,6 +34,11 @@ public class Organization implements Serializable {
         this.website = website;
     }
 
+    public Organization(String name, String website, Period period) {
+        this(name, website);
+        this.periods.add(period);
+    }
+
     public Organization(String name, String website, List<Period> periods) {
         this(name, website);
         this.periods = Objects.requireNonNull(periods);

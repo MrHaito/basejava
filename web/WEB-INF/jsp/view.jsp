@@ -1,5 +1,6 @@
 <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
 <%@ page import="ru.javawebinar.basejava.model.*" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -51,11 +52,22 @@
                     </c:choose>
                     <c:forEach var="period"
                                items="${organization.periods}">
+                        <c:set var="dateNow" value="<%=LocalDate.now().getMonth().getValue()%>"/>
                         <c:set var="startDate" value="${period.startDate}"/>
                         <c:set var="endDate" value="${period.endDate}"/>
                         <c:choose>
                             <c:when test="${startDate != null || endDate != null}">
-                                <p><strong>Период работы</strong>: ${period.startDate} - ${period.endDate}</p>
+                                <c:choose>
+                                    <c:when test="${startDate.month.value == dateNow}">
+                                        <p><strong>Период работы</strong>: Сейчас - ${period.endDate}</p>
+                                    </c:when>
+                                    <c:when test="${endDate.month.value == dateNow}">
+                                        <p><strong>Период работы</strong>: ${period.startDate} - ${"Сейчас"}</p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p><strong>Период работы</strong>: ${period.startDate} - ${period.endDate}</p>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
                         </c:choose>
                         <p>${period.position}</p>

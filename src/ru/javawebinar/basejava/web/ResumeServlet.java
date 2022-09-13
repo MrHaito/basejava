@@ -101,38 +101,36 @@ public class ResumeServlet extends HttpServlet {
                             String name = values[i];
                             if (name.length() > 0) {
                                 orgsCount += 1;
+
+                                String[] positions = request.getParameterValues((type.name() + i) + "period_position");
+                                String[] descriptions = request.getParameterValues((type.name() + i) + "period_description");
+                                String[] startsDates = request.getParameterValues((type.name() + i) + "period_startDate");
+                                String[] endDates = request.getParameterValues((type.name() + i) + "period_endDate");
+                                List<Period> periods = new ArrayList<>();
+
+                                for (int j = 0; j < positions.length; j++) {
+                                    String start = "01/" + startsDates[j];
+                                    String end = "01/" + endDates[j];
+                                    LocalDate startDate = (start.length() < 4) ? null : LocalDate.parse(start, formatter);
+                                    LocalDate endDate = (end.length() < 4) ? null : LocalDate.parse(end, formatter);
+
+                                    Period period = new Period(startDate, endDate, positions[j], descriptions[j]);
+                                    periods.add(period);
+                                }
+                                if (positions[positions.length - 1].length() > 0 || descriptions[descriptions.length - 1].length() > 0 || startsDates[startsDates.length - 1].length() > 0 || endDates[endDates.length - 1].length() > 0) {
+                                    periods.add(new Period());
+                                }
+                                Organization organization = new Organization(name, webs[i], periods);
+                                orgs.add(organization);
                             }
-                            String[] positions = request.getParameterValues((type.name() + i) + "period_position");
-                            String[] descriptions = request.getParameterValues((type.name() + i) +
-                                    "period_description");
-                            String[] startsDates = request.getParameterValues((type.name() + i) + "period_startDate");
-                            String[] endDates = request.getParameterValues((type.name() + i) + "period_endDate");
-                            List<Period> periods = new ArrayList<>();
-
-                            for (int j = 0; j < positions.length; j++) {
-                                String start = "01/" + startsDates[j];
-                                String end = "01/" + endDates[j];
-                                LocalDate startDate = (start.length() < 4) ? null : LocalDate.parse(start, formatter);
-                                LocalDate endDate = (end.length() < 4) ? null : LocalDate.parse(end, formatter);
-
-                                Period period = new Period(startDate, endDate, positions[j], descriptions[j]);
-                                periods.add(period);
-                            }
-
-                            if (positions[positions.length - 1].length() > 0
-                                    || descriptions[descriptions.length - 1].length() > 0
-                                    || startsDates[startsDates.length -1].length() > 0
-                                    || endDates[endDates.length - 1].length() > 0) {
-                                periods.add(new Period());
-                            }
-
-                            Organization organization = new Organization(name, webs[i], periods);
-                            orgs.add(organization);
                         }
                         List<Organization> currentOrganisations = (r.getSections(type) == null) ? null :
                                 ((OrganizationSection) r.getSections(type)).getOrganizations();
                         if (currentOrganisations != null && currentOrganisations.size() == orgsCount) {
                             orgs.add(new Organization());
+                        }
+                        if (orgs.size() == 0) {
+                            orgs.add(new Organization("", "", new Period()));
                         }
                         r.addSection(type, new OrganizationSection(orgs));
                     }
@@ -140,7 +138,8 @@ public class ResumeServlet extends HttpServlet {
             } else {
                 r.getSections().remove(type);
             }
-        } if (!newResume) {
+        }
+        if (!newResume) {
             storage.update(r);
         } else {
             storage.save(r);
