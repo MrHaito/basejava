@@ -92,32 +92,46 @@ public class ResumeServlet extends HttpServlet {
                         r.addSection(type, listSection);
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        int orgCount = 0;
-
-                        String[] webs = request.getParameterValues(type.name() + "web");
-                        String[] positions = request.getParameterValues(type.name() + "period_position");
-                        String[] descriptions = request.getParameterValues(type.name() + "period_description");
-                        String[] startsDates = request.getParameterValues(type.name() + "period_startDate");
-                        String[] endDates = request.getParameterValues(type.name() + "period_endDate");
-                        OrganizationSection organizationSection = new OrganizationSection();
-
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        int orgsCount = 0;
                         List<Organization> orgs = new ArrayList<>();
+                        String[] webs = request.getParameterValues(type.name() + "web");
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
                             if (name.length() > 0) {
-                                orgCount += 1;
+                                orgsCount += 1;
                             }
-                            String start = "01/" + startsDates[i];
-                            String end = "01/" + endDates[i];
-                            LocalDate startDate = (start.length() < 4) ? null : LocalDate.parse(start,
-                                    formatter);
-                            LocalDate endDate = (end.length() < 4) ? null : LocalDate.parse(end, formatter);
-                            Organization organization = new Organization(name, webs[i]);
-                            organization.addPeriod(new Period(startDate, endDate, positions[i], descriptions[i]));
+                            String[] positions = request.getParameterValues((type.name() + i) + "period_position");
+                            String[] descriptions = request.getParameterValues((type.name() + i) +
+                                    "period_description");
+                            String[] startsDates = request.getParameterValues((type.name() + i) + "period_startDate");
+                            String[] endDates = request.getParameterValues((type.name() + i) + "period_endDate");
+                            List<Period> periods = new ArrayList<>();
+
+                            for (int j = 0; j < positions.length; j++) {
+                                String start = "01/" + startsDates[j];
+                                String end = "01/" + endDates[j];
+                                LocalDate startDate = (start.length() < 4) ? null : LocalDate.parse(start, formatter);
+                                LocalDate endDate = (end.length() < 4) ? null : LocalDate.parse(end, formatter);
+
+                                Period period = new Period(startDate, endDate, positions[j], descriptions[j]);
+                                periods.add(period);
+                            }
+
+                            if (positions[positions.length - 1].length() > 0
+                                    || descriptions[descriptions.length - 1].length() > 0
+                                    || startsDates[startsDates.length -1].length() > 0
+                                    || endDates[endDates.length - 1].length() > 0) {
+                                periods.add(new Period());
+                            }
+
+                            Organization organization = new Organization(name, webs[i], periods);
                             orgs.add(organization);
                         }
-                        if (((OrganizationSection) r.getSections(type)).getOrganizations().size() == orgCount) {
+                        List<Organization> currentOrganisations = (r.getSections(type) == null) ? null :
+                                ((OrganizationSection) r.getSections(type)).getOrganizations();
+                        if (currentOrganisations != null && currentOrganisations.size() == orgsCount) {
                             orgs.add(new Organization());
                         }
                         r.addSection(type, new OrganizationSection(orgs));
@@ -126,8 +140,7 @@ public class ResumeServlet extends HttpServlet {
             } else {
                 r.getSections().remove(type);
             }
-        }
-        if (!newResume) {
+        } if (!newResume) {
             storage.update(r);
         } else {
             storage.save(r);

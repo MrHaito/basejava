@@ -46,9 +46,10 @@
                     <textarea name="${section_type.name()}" cols="100" rows="20">${section}</textarea>
                 </c:when>
                 <c:when test="${section_type == 'EXPERIENCE' or section_type == 'EDUCATION'}">
-                    <c:forEach var="organization" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                    <c:forEach var="organization" items="<%=((OrganizationSection) section).getOrganizations()%>"
+                               varStatus="loop">
                         <dl>
-                            <dt>Место работы:</dt>
+                            <dt><strong>Место работы:</strong></dt>
                             <dd><input type="text" name="${section_type}" size="30"
                                        value="${organization.name}"/></dd>
                         </dl>
@@ -61,7 +62,7 @@
                             <dl>
                                 <dt>Начало работы:</dt>
                                 <dd><input type="text"
-                                           name="${section_type.name()}period_startDate"
+                                           name="${section_type.name()}${loop.index}period_startDate"
                                            size="30"
                                            value="${period.startDate.format(DateTimeFormatter.ofPattern("MM/yyyy"))}"
                                            pattern="[0-9/]{7}"
@@ -70,7 +71,7 @@
                             <dl>
                                 <dt>Конец работы:</dt>
                                 <dd><input type="text"
-                                           name="${section_type.name()}period_endDate"
+                                           name="${section_type.name()}${loop.index}period_endDate"
                                            size="30"
                                            value="${period.endDate.format(DateTimeFormatter.ofPattern("MM/yyyy"))}"
                                            pattern="[0-9/]{7}"
@@ -78,12 +79,12 @@
                             </dl>
                             <dl>
                                 <dt>Должность:</dt>
-                                <dd><input type="text" name="${section_type.name()}period_position" size="30"
+                                <dd><input type="text" name="${section_type.name()}${loop.index}period_position" size="30"
                                            value="${period.position}"/></dd>
                             </dl>
                             <dl>
                                 <dt>Описание:</dt>
-                                <dd><textarea name="${section_type.name()}period_description" cols="100"
+                                <dd><textarea name="${section_type.name()}${loop.index}period_description" cols="100"
                                               rows="20">${period.description}</textarea></dd>
                             </dl>
                         </c:forEach>

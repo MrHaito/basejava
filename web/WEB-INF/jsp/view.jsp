@@ -41,10 +41,23 @@
             <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
                 <c:forEach var="organization"
                            items="<%=((OrganizationSection) section).getOrganizations()%>">
-                    <h4><a href="${organization.website}">${organization.name}</a></h4>
+                    <c:choose>
+                        <c:when test="${empty organization.website}">
+                            <h4>${organization.name}</h4>
+                        </c:when>
+                        <c:otherwise>
+                            <h4><a href="${organization.website}">${organization.name}</a></h4>
+                        </c:otherwise>
+                    </c:choose>
                     <c:forEach var="period"
                                items="${organization.periods}">
-                        <p><strong>Период работы</strong>: ${period.startDate} - ${period.endDate}</p>
+                        <c:set var="startDate" value="${period.startDate}"/>
+                        <c:set var="endDate" value="${period.endDate}"/>
+                        <c:choose>
+                            <c:when test="${startDate != null || endDate != null}">
+                                <p><strong>Период работы</strong>: ${period.startDate} - ${period.endDate}</p>
+                            </c:when>
+                        </c:choose>
                         <p>${period.position}</p>
                         <p>${period.description}</p>
                     </c:forEach>

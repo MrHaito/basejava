@@ -147,7 +147,6 @@ public class ResumeTestData {
                 "информационных технологий, механики и оптики", "http://www.ifmo.ru/");
         organization.addPeriod(new Period(1993, Month.OCTOBER, 1996, Month.JULY,
                 "Аспирантура (программист С, С++)", null));
-        education_description.addOrganization(organization);
         organization.addPeriod(new Period(LocalDate.of(1987, Month.SEPTEMBER, 1), LocalDate.of(1993, Month.JULY, 1),
                 "Инженер (программист Fortran, C)", null));
         education_description.addOrganization(organization);
