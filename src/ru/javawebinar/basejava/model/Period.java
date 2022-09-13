@@ -33,6 +33,11 @@ public class Period implements Serializable {
         this.description = "";
     }
 
+    public Period(String position, String description) {
+        this.position = position;
+        this.description = description;
+    }
+
     public Period(int startYear, Month startMonth, String title, String description) {
         this(of(startYear, startMonth), NOW, title, description);
     }
@@ -42,8 +47,8 @@ public class Period implements Serializable {
     }
 
     public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
-        this.startDate = Objects.requireNonNull(startDate, "StartDate must not be null");;
-        this.endDate = Objects.requireNonNull(endDate, "EndDate must not be null");
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.position = Objects.requireNonNull(position, "Position must not be null");
         this.description = description != null ? description : "";
     }

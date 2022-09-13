@@ -92,6 +92,8 @@ public class ResumeServlet extends HttpServlet {
                         r.addSection(type, listSection);
                     }
                     case EXPERIENCE, EDUCATION -> {
+                        int orgCount = 0;
+
                         String[] webs = request.getParameterValues(type.name() + "web");
                         String[] positions = request.getParameterValues(type.name() + "period_position");
                         String[] descriptions = request.getParameterValues(type.name() + "period_description");
@@ -100,18 +102,25 @@ public class ResumeServlet extends HttpServlet {
                         OrganizationSection organizationSection = new OrganizationSection();
 
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        List<Organization> orgs = new ArrayList<>();
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
+                            if (name.length() > 0) {
+                                orgCount += 1;
+                            }
                             String start = "01/" + startsDates[i];
                             String end = "01/" + endDates[i];
-                            LocalDate startDate = LocalDate.parse(start, formatter);
-                            LocalDate endDate = LocalDate.parse(end, formatter);
-
+                            LocalDate startDate = (start.length() < 4) ? null : LocalDate.parse(start,
+                                    formatter);
+                            LocalDate endDate = (end.length() < 4) ? null : LocalDate.parse(end, formatter);
                             Organization organization = new Organization(name, webs[i]);
                             organization.addPeriod(new Period(startDate, endDate, positions[i], descriptions[i]));
-                            organizationSection.addOrganization(organization);
+                            orgs.add(organization);
                         }
-                        r.addSection(type, organizationSection);
+                        if (((OrganizationSection) r.getSections(type)).getOrganizations().size() == orgCount) {
+                            orgs.add(new Organization());
+                        }
+                        r.addSection(type, new OrganizationSection(orgs));
                     }
                 }
             } else {

@@ -41,8 +41,7 @@
             <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
                 <c:forEach var="organization"
                            items="<%=((OrganizationSection) section).getOrganizations()%>">
-                    <h4>${organization.name}</h4>
-                    <a href="${organization.website}">${organization.website}</a>
+                    <h4><a href="${organization.website}">${organization.name}</a></h4>
                     <c:forEach var="period"
                                items="${organization.periods}">
                         <p><strong>Период работы</strong>: ${period.startDate} - ${period.endDate}</p>
